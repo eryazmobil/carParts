@@ -1,0 +1,73 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'kotlin-parcelize'
+}
+
+android {
+    namespace 'eryaz.software.carParts.data'
+    compileSdk 34
+
+    defaultConfig {
+        minSdk 23
+        targetSdk 34
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+
+        buildConfigField "String", "BASE_URL", BASE_URL
+        buildConfigField "String", "BASE_OUT_URL", BASE_OUT_URL
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    kotlinOptions {
+        jvmTarget = '11'
+    }
+
+    buildFeatures {
+        dataBinding true
+    }
+}
+
+dependencies {
+    def koin_version = "3.1.4"
+    def retrofit_version = "2.9.0"
+    def coroutines_adapter_version = "0.9.2"
+    def interceptor_version = "4.9.0"
+    def timber_version = "5.0.1"
+    def security_crypto_version = "1.1.0-alpha03"
+    def gson_version = "2.9.0"
+
+    //KTX
+    api('androidx.core:core-ktx:1.12.0')
+
+    //Koin
+    api("io.insert-koin:koin-core:$koin_version")
+    api("io.insert-koin:koin-androidx-workmanager:$koin_version")
+    testApi("io.insert-koin:koin-test:$koin_version")
+
+    //Retrofit
+    api("com.squareup.retrofit2:retrofit:$retrofit_version")
+    implementation "com.squareup.retrofit2:converter-gson:$gson_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$interceptor_version"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$coroutines_adapter_version"
+
+    //Security
+    implementation "androidx.security:security-crypto:$security_crypto_version"
+    implementation 'com.google.firebase:firebase-crashlytics:18.6.2'
+    //Timber
+    api("com.jakewharton.timber:timber:$timber_version")
+
+    //Gson
+    implementation 'com.google.code.gson:gson:2.10.1'
+}

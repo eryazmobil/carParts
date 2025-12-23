@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="customAlertDialog" parent="android:Theme.Dialog">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="Widget.Zeus.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/colorTextGray</item>
+        <item name="android:textColorHint">@color/colorTextGray</item>
+        <item name="helperTextTextColor">@color/colorTextGray</item>
+        <item name="hintTextColor">@color/white</item>
+        <item name="boxStrokeWidth">2dp</item>
+        <item name="boxCornerRadiusTopStart">12dp</item>
+        <item name="boxCornerRadiusTopEnd">12dp</item>
+        <item name="boxCornerRadiusBottomStart">12dp</item>
+        <item name="boxCornerRadiusBottomEnd">12dp</item>
+        <item name="boxStrokeWidthFocused">2dp</item>
+        <item name="errorIconDrawable">@null</item>
+        <item name="endIconMode">clear_text</item>
+        <item name="endIconTint">@color/white</item>
+    </style>
+
+    <style name="Widget.Zeus.TabLayout" parent="">
+        <item name="tabTextAppearance">@style/TextAppearance.Zeus.Tab</item>
+        <item name="tabBackground">@color/transparent</item>
+        <item name="tabIndicator">@drawable/tab_indicator</item>
+        <item name="tabIndicatorColor">?colorSurface</item>
+        <item name="tabRippleColor">@color/transparent</item>
+        <item name="tabSelectedTextColor">?colorOnSurface</item>
+        <item name="tabTextColor">?colorDescription</item>
+        <item name="android:minHeight">46dp</item>
+        <item name="tabIndicatorHeight">46dp</item>
+        <item name="tabIndicatorGravity">stretch</item>
+    </style>
+
+    <style name="TextAppearance.Zeus.Tab" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+    </style>
+
+    <style name="Widget.Zeus.SearchInput" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/black</item>
+        <item name="android:textColorHint">@color/logoGray</item>
+        <item name="helperTextTextColor">@color/logoGray</item>
+        <item name="hintTextColor">@color/colorPrimaryBoldBlue</item>
+        <item name="boxStrokeWidth">2dp</item>
+        <item name="elevation">6dp</item>
+        <item name="boxCornerRadiusTopStart">6dp</item>
+        <item name="boxCornerRadiusTopEnd">6dp</item>
+        <item name="boxCornerRadiusBottomStart">6dp</item>
+        <item name="boxCornerRadiusBottomEnd">6dp</item>
+        <item name="boxStrokeWidthFocused">2dp</item>
+        <item name="endIconMode">custom</item>
+    </style>
+
+    <style name="Widget.Zeus.CountingSearchInput" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/logoLightGray</item>
+        <item name="android:textColorHint">@color/logoGray</item>
+        <item name="helperTextTextColor">@color/logoGray</item>
+        <item name="hintTextColor">@color/colorButtonRed</item>
+        <item name="backgroundColor">@color/colorEditTextBG</item>
+        <item name="boxStrokeWidth">2dp</item>
+        <item name="elevation">50dp</item>
+        <item name="boxCornerRadiusTopStart">32dp</item>
+        <item name="boxCornerRadiusTopEnd">32dp</item>
+        <item name="boxCornerRadiusBottomStart">32dp</item>
+        <item name="boxCornerRadiusBottomEnd">32dp</item>
+        <item name="boxStrokeWidthFocused">2dp</item>
+        <item name="errorIconDrawable">@drawable/ic_blue_search</item>
+        <item name="endIconTint">@null</item>
+        <item name="endIconMode">custom</item>
+    </style>
+
+    <style name="Widget.Zeus.BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bg_bottom_sheet_dialog</item>
+    </style>
+
+    <style name="Widget.NewZeusDemo.Button" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="backgroundTint">?colorPrimary</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="strokeWidth">0dp</item>
+        <item name="cornerRadius">6dp</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:minHeight">56dp</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="rippleColor">@color/colorAccent50Percent</item>
+    </style>
+
+    <style name="Widget.NewZeusDemo.Button_2" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="backgroundTint">@color/blue_a1</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="strokeWidth">0dp</item>
+        <item name="cornerRadius">6dp</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:minHeight">56dp</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="rippleColor">@color/colorAccent50Percent</item>
+    </style>
+
+    <style name="Widget.NewZeusDemo.CountingButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="backgroundTint">@color/orange_a1</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="strokeWidth">0dp</item>
+        <item name="cornerRadius">6dp</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:minHeight">56dp</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="rippleColor">@color/colorAccent</item>
+    </style>
+
+    <style name="Widget.NewZeusDemo.ButtonYellow" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="backgroundTint">?colorSecondary</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="strokeWidth">0dp</item>
+        <item name="cornerRadius">12dp</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:minHeight">56dp</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+    </style>
+
+    <style name="Widget.NewZeusDemo.ButtonGray" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="backgroundTint">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="strokeWidth">0dp</item>
+        <item name="cornerRadius">12dp</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:minHeight">56dp</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+    </style>
+
+    <style name="Widget.NewZeusDemo.Button.Outlined" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="strokeColor">?colorPrimary</item>
+        <item name="android:textColor">?colorPrimary</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="cornerRadius">6dp</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:minHeight">56dp</item>
+        <item name="android:textSize">17sp</item>
+        <item name="rippleColor">@color/ripple_material_light</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+    </style>
+
+    <style name="Widget.NewZeusDemo.Toolbar" parent="">
+        <item name="titleTextColor">?colorOnPrimary</item>
+        <item name="backgroundColor">@color/colorButtonRed</item>
+    </style>
+
+    <style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog">
+        <item name="android:windowEnterAnimation">@anim/scale_in</item>
+        <item name="android:windowExitAnimation">@anim/scale_out</item>
+        <item name="android:windowMinWidthMajor">90%</item>
+        <item name="android:windowMinWidthMinor">90%</item>
+        <item name="android:colorBackground">@color/white</item>
+    </style>
+
+    <style name="Widget.NewZeusDemo.CornerSize10" parent="">
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="cornerSize">10dp</item>
+        <item name="cornerFamily">rounded</item>
+    </style>
+
+    <style name="Widget.Zeus.Button.IconButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:filterTouchesWhenObscured">true</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">32dp</item>
+        <item name="strokeWidth">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="iconGravity">textTop</item>
+        <item name="iconPadding">0dp</item>
+        <item name="cornerRadius">50dp</item>
+        <item name="iconTint">@null</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="rippleColor">@color/ripple_material_light</item>
+    </style>
+
+    //ShapeAppearanceOverlay
+
+    <style name="ShapeAppearanceOverlay.Zeus.CornerSize50Percent" parent="">
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="cornerSize">50%</item>
+        <item name="cornerFamily">rounded</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.Zeus.CornerSize8" parent="">
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="cornerSize">8dp</item>
+        <item name="cornerFamily">rounded</item>
+    </style>
+
+    <style name="Theme.Eryaz.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textColorPrimary">@color/black</item>
+        <item name="android:colorBackground">@color/white</item>
+        <item name="colorPrimary">@color/colorAccent</item>
+    </style>
+
+    <style name="Widget.Eryaz.Button.IconButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:filterTouchesWhenObscured">true</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">32dp</item>
+        <item name="strokeWidth">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="iconGravity">textTop</item>
+        <item name="iconPadding">0dp</item>
+        <item name="cornerRadius">50dp</item>
+        <item name="iconTint">@null</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="rippleColor">@color/ripple_material_light</item>
+    </style>
+
+    <style name="RoundedImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+</resources>

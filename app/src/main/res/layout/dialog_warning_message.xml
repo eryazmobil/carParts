@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="model"
+            type="eryaz.software.carParts.data.models.dto.WarningDialogDto" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        app:cardCornerRadius="@dimen/_10sdp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/img_dialog_status"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/_12sdp"
+                android:contentDescription="@string/placement_completed"
+                android:padding="@dimen/_5sdp"
+                app:tint="@color/orange_a1"
+                android:src="@drawable/info_around"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/titleTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sogeoui"
+                android:gravity="center"
+                android:padding="@dimen/_8sdp"
+                android:text="@{model.title}"
+                android:textColor="@color/colorCompletedGreen"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/img_dialog_status"
+                tools:text="@string/not_found_work_activity" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/messageTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sogeoui"
+                android:gravity="center"
+                android:padding="@dimen/_12sdp"
+                android:text="@{model.message}"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_14sdp"
+                app:layout_constraintTop_toBottomOf="@id/titleTxt"
+                tools:text="@string/not_found_work_activity" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_dialog_positive"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/sogeoui"
+                android:onClick="@{model.completeButton.onClickListener}"
+                android:padding="@dimen/_12sdp"
+                android:text="@string/okay"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:textColor="@color/bgColor"
+                app:backgroundTint="@color/blue_a1"
+                app:cornerRadius="@dimen/_6sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/messageTxt" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

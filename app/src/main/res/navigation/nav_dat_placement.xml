@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/placement_dat_nav"
+    app:startDestination="@id/datPlacementListFragment">
+
+    <fragment
+        android:id="@+id/datPlacementListFragment"
+        android:name="eryaz.software.carParts.ui.dashboard.inbound.dat.placement.DatPlacementListFragment"
+        android:label="DatPlacementListFragment"
+        tools:layout="@layout/fragment_dat_placement_list">
+        <action
+            android:id="@+id/action_datPlacementListFragment_to_datPlacementDetailFragment"
+            app:destination="@id/datPlacementDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/datPlacementDetailFragment"
+        android:name="eryaz.software.carParts.ui.dashboard.inbound.dat.placement.placementDetail.DatPlacementDetailFragment"
+        android:label="DatPlacementDetailFragment"
+        tools:layout="@layout/fragment_dat_placement_detail">
+        <action
+            android:id="@+id/action_datPlacementDetailFragment_to_waybillDetailListDialog"
+            app:destination="@id/waybillDetailListDialog3" />
+    </fragment>
+    <dialog
+        android:id="@+id/waybillDetailListDialog3"
+        android:name="eryaz.software.carParts.ui.dashboard.inbound.acceptance.acceptanceProcess.waybillDetail.WaybillDetailListDialog"
+        android:label="WaybillDetailListDialog"
+        tools:layout="@layout/waybill_detail_dialog_list" />
+</navigation>

@@ -1,0 +1,39 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimaryBoldBlue</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
+        <item name="colorSecondary">@color/secondaryColor</item>
+        <item name="colorAccent">@color/colorPrimaryBoldBlue</item>
+        <item name="android:colorBackground">@color/gray_f2</item>
+        <item name="colorOnBackground">@color/black</item>
+        <item name="colorSurface">@color/white</item>
+        <item name="colorOnSurface">@color/black</item>
+        <!-- Customize your theme here. -->
+
+        <item name="android:fontFamily">@font/segoe</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowLightStatusBar">false</item>
+
+        <item name="colorDescription">@color/gray_a1</item>
+    </style>
+
+    <style name="AppThemeWhite" parent="AppTheme">
+        <item name="colorAccent">@color/white</item>
+    </style>
+
+    <style name="Theme.Zeus.Dialog" parent="ThemeOverlay.MaterialComponents.Dialog">
+        <item name="android:windowEnterAnimation">@anim/scale_in</item>
+        <item name="android:windowExitAnimation">@anim/scale_out</item>
+        <item name="android:windowMinWidthMajor">90%</item>
+        <item name="android:windowMinWidthMinor">90%</item>
+        <item name="android:colorBackground">@color/white</item>
+    </style>
+
+    <style name="Theme.Zeus.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="android:colorBackground">@color/white</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+        <item name="bottomSheetStyle">@style/Widget.Zeus.BottomSheetStyle</item>
+    </style>
+</resources>

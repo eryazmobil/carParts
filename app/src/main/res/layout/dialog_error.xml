@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="model"
+            type="eryaz.software.carParts.data.models.dto.ErrorDialogDto" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_bottom_sheet_dialog"
+        android:paddingBottom="16dp">
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/closeImgBtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="?actionBarItemBackground"
+            android:src="@drawable/ic_dialog_close"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/titleTxt"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="40dp"
+            android:text="@{model.title}"
+            android:textSize="20sp"
+            android:fontFamily="@font/roboto_bold"
+            android:textColor="?colorOnBackground"
+            app:isVisibleElseGone="@{model.title.length() > 0}"
+            app:layout_constraintEnd_toStartOf="@id/closeImgBtn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Title" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/messageTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:paddingVertical="16dp"
+            android:text="@{model.message}"
+            android:textColor="?colorOnBackground"
+            android:textSize="16sp"
+            android:fontFamily="@font/roboto_regular"
+            app:layout_constraintTop_toBottomOf="@+id/titleTxt"
+            app:layout_goneMarginTop="32dp"
+            app:visibility="@{model.message.length() > 0}"
+            tools:text="Description" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/positiveBtn"
+            style="@style/Widget.NewZeusDemo.Button_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:onClick="@{model.positiveButton.onClickListener}"
+            app:layout_constraintTop_toBottomOf="@+id/messageTxt"
+            app:textRes='@{ model.positiveButton.text}'
+            app:visibility="@{model.positiveButton.text != 0}"
+            tools:text="Ok" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/negativeBtn"
+            style="@style/Widget.NewZeusDemo.Button.Outlined"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
+            android:onClick="@{model.negativeButton.onClickListener}"
+            app:layout_constraintTop_toBottomOf="@+id/positiveBtn"
+            app:textRes='@{ model.negativeButton.text}'
+            app:visibility="@{model.negativeButton.text != 0}"
+            tools:text="@tools:sample/lorem" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

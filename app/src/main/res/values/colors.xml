@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="primaryColor">#802428</color>
+    <color name="primaryLightColor">#909194</color>
+    <color name="primaryDarkColor">#4B5156</color>
+    <color name="secondaryColor">#ebba00</color>
+    <color name="secondaryLightColor">#ffec4c</color>
+    <color name="secondaryDarkColor">#b48a00</color>
+    <color name="primaryTextColor">#ffffff</color>
+    <color name="secondaryTextColor">#000000</color>
+    <color name="background">#dddddd</color>
+
+    <color name="btnPositive">#4AB543</color>
+    <color name="btnNegative">#DEDEDE</color>
+
+    <color name="logoGray">#4B5156</color>
+    <color name="logoLightGray">#909194</color>
+    <color name="logoRed">#802428</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="gray_f2">#F2F2F2</color>
+    <color name="gray_a1">#A1A1A1</color>
+    <color name="gray_a2">#949494</color>
+
+    <color name="colorPrimary">#EBBA00 </color>
+    <color name="colorPrimaryBlue">#085AFB</color>
+    <color name="colorPrimaryBoldBlue">#00243A</color>
+    <color name="colorPrimaryYellow">#FFCB08</color>
+    <color name="colorTextGray">#DBDBDB</color>
+    <color name="colorButtonRed">#852523</color>
+    <color name="colorPrimaryYellowNew">#ffb822</color>
+    <color name="colorPrimaryGrey">#BEBEBE</color>
+    <color name="colorPrimary75Percent">#BF81282C</color>
+    <color name="colorPrimary50Percent">#8081282C</color>
+    <color name="colorPrimaryDark">#4E5157</color>
+    <color name="colorPrimaryDark50Percent">#804E5157</color>
+
+    <color name="colorGradientMiddle">#FFCB08</color>
+    <color name="colorGradientEnd">#FFE06A</color>
+    <color name="colorDangerRed">#EA2600</color>
+    <color name="colorSuccessGreen">#4AB543</color>
+    <color name="colorAccent">#909295</color>
+    <color name="colorEditTextBorder">#DADADA</color>
+    <color name="colorAccent50Percent">#80909295</color>
+    <color name="white">#FFFFFF</color>
+    <color name="bgColor">#F2F2F2</color>
+    <color name="colorWhite50Percent">#80FFFFFF</color>
+    <color name="colorBackground">#E0E0CE</color>
+    <color name="black">#000000</color>
+    <color name="textColor">#646464</color>
+    <color name="colorTransparantBackground">#8C000000</color>
+    <color name="colorReadBarcodeBackground">#1A000000</color>
+    <color name="colorReadBarcodeBorder">#AFB0B1</color>
+    <color name="colorTotalAmount">#CCCC00</color>
+    <color name="colorTotalAmount75Percent">#BFCCCC00</color>
+    <color name="colorTotalAmount50Percent">#80CCCC00</color>
+    <color name="colorCompletedGreen">#009900</color>
+    <color name="colorEmpty">#00000000</color>
+    <color name="panelButtonBorderColor">#00000000</color>
+    <color name="colorEditTextColor">#545454</color>
+    <color name="colorButton">#0083C4</color>
+    <color name="colorGrayLight">#848484</color>
+    <color name="colorPurple">#A500FF</color>
+    <color name="colorEditTextBG">#C3D300</color>
+
+    <color name="green_400">#6CC654</color>
+    <color name="green_600">#3D8D71</color>
+    <color name="gray_f6">#F6F6F9</color>
+    <color name="orange_a1">#ED8725</color>
+    <color name="blue_a1">#0083C4</color>
+    <color name="white_f3_to_dark_3f">@color/white</color>
+
+</resources>

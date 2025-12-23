@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/acceptance_dat_nav"
+    app:startDestination="@id/datAcceptanceListFragment">
+
+    <fragment
+        android:id="@+id/datAcceptanceListFragment"
+        android:name="eryaz.software.carParts.ui.dashboard.inbound.dat.acceptance.DatAcceptanceListFragment"
+        android:label="DatAcceptanceListFragment"
+        tools:layout="@layout/fragment_dat_acceptance_list">
+        <action
+            android:id="@+id/action_datAcceptanceListFragment_to_datAcceptanceProcessFragment"
+            app:destination="@id/datAcceptanceProcessFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/datAcceptanceProcessFragment"
+        android:name="eryaz.software.carParts.ui.dashboard.inbound.dat.acceptance.acceptanceProcess.DatAcceptanceProcessFragment"
+        android:label="DatAcceptanceProcessFragment"
+        tools:layout="@layout/fragment_dat_acceptance_process_detail">
+        <action
+            android:id="@+id/action_datAcceptanceProcessFragment_to_createBarcodeDialog"
+            app:destination="@id/createBarcodeDialog2" />
+        <action
+            android:id="@+id/action_datAcceptanceProcessFragment_to_waybillDetailListDialog"
+            app:destination="@id/waybillDetailListDialog2" />
+    </fragment>
+    <dialog
+        android:id="@+id/createBarcodeDialog2"
+        android:name="eryaz.software.carParts.ui.dashboard.inbound.acceptance.acceptanceProcess.createBarcode.CreateBarcodeDialog"
+        android:label="CreateBarcodeDialog"
+        tools:layout="@layout/create_barcode_dialog" />
+    <dialog
+        android:id="@+id/waybillDetailListDialog2"
+        android:name="eryaz.software.carParts.ui.dashboard.inbound.acceptance.acceptanceProcess.waybillDetail.WaybillDetailListDialog"
+        android:label="WaybillDetailListDialog"
+        tools:layout="@layout/waybill_detail_dialog_list" />
+</navigation>

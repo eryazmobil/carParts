@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="eryaz.software.carParts.ui.dashboard.outbound.datControl.ControlPointTransferListVM" />
+    </data>
+
+    <eryaz.software.carParts.util.widgets.StateView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        app:onRetryClick="@{() -> viewModel.getTransferWorkActivityList()}"
+        app:sv_ignore_referenced_ids="toolbar"
+        app:sv_viewState="@{viewModel.uiState}">
+
+        <eryaz.software.carParts.util.widgets.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@drawable/back_icon"
+            app:subTitle="@string/choose_work_activity"
+            app:title="@string/menu_sub_outbound_dat_control" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginVertical="12dp"
+                android:layout_weight="2"
+                android:paddingHorizontal="16dp"
+                app:itemDecoration="@{12}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:itemCount="6"
+                tools:listitem="@layout/item_work_activity_list" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <include layout="@layout/layout_loading" />
+
+        <include layout="@layout/layout_error" />
+
+    </eryaz.software.carParts.util.widgets.StateView>
+</layout>

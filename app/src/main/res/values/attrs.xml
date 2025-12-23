@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- TextInputLayout -->
+    <declare-styleable name="TextInputLayout">
+        <attr name="errorText" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="WindowCenteredImageView">
+        <attr name="src" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="StateView">
+        <attr name="sv_errorViewId" format="reference" />
+        <attr name="sv_loadingViewId" format="reference" />
+        <attr name="sv_emptyViewId" format="reference" />
+        <attr name="sv_retryViewId" format="reference" />
+        <attr name="sv_refreshLayoutId" format="reference" />
+        <attr name="sv_ignore_referenced_ids" format="string" />
+        <attr name="onRetryClick" format="string" />
+
+        <attr name="sv_viewState" format="enum">
+            <enum name="content" value="0" />
+            <enum name="loading" value="1" />
+            <enum name="error" value="2" />
+            <enum name="empty" value="3" />
+        </attr>
+
+        <attr name="sv_child_visibility" format="enum">
+            <enum name="gone" value="0" />
+            <enum name="invisible" value="1" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="SettingsItem">
+        <attr name="title" format="string" />
+        <attr name="value" format="string" />
+
+    </declare-styleable>
+
+    <declare-styleable name="DetailRowTextView">
+        <attr name="detailTitle" format="string" />
+        <attr name="creationTime" format="string" />
+        <attr name="documentNo" format="string" />
+        <attr name="clientName" format="string" />
+        <attr name="changeColor" format="color" />
+
+    </declare-styleable>
+
+   <declare-styleable name="EditQuantityView">
+        <attr name="editTitle" format="string" />
+        <attr name="quantity" format="string" />
+        <attr name="multiplier" format="string" />
+       <attr name="changeTitleColor" format="color" />
+
+    </declare-styleable>
+
+    <declare-styleable name="Toolbar">
+        <attr name="title" />
+        <attr name="subTitle" format="string" />
+        <attr name="navigationIcon" format="reference" />
+        <attr name="endIconDrawable" format="reference" />
+    </declare-styleable>
+
+</resources>

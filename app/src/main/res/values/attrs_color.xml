@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="textHelperColor" format="color" />
+    <attr name="colorDescription" format="color" />
+    <attr name="colorOnSecondaryVariant" format="color" />
+
+    <!-- TextInputLayout -->
+    <attr name="tilTextColor" format="color" />
+    <attr name="tilStrokeNormalColor" format="color" />
+    <attr name="tilStrokeFocusedColor" format="color" />
+
+    <!-- BottomNavigationView -->
+    <attr name="bottomNavCheckedIconTint" format="color" />
+    <attr name="bottomNavUnCheckedIconTint" format="color" />
+    <attr name="bottomNavCheckedTextColor" format="color" />
+    <attr name="bottomNavUnCheckedTextColor" format="color" />
+</resources>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 8.3.2" type="baseline" client="gradle" dependencies="false" name="AGP (8.3.2)" variant="fatal" version="8.3.2">
+
+    <issue
+        id="ExtraTranslation"
+        message="&quot;packageLenght&quot; is translated here but not found in default locale"
+        errorLine1="    &lt;string name=&quot;packageLenght&quot;>Uzunluq&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-az/strings.xml"
+            line="331"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="ExtraTranslation"
+        message="&quot;packageLenght&quot; is translated here but not found in default locale"
+        errorLine1="    &lt;string name=&quot;packageLenght&quot;>Length&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-en/strings.xml"
+            line="333"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="ExtraTranslation"
+        message="&quot;packageWeigth&quot; is translated here but not found in default locale"
+        errorLine1="    &lt;string name=&quot;packageWeigth&quot;>Çəki&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-az/strings.xml"
+            line="334"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="ExtraTranslation"
+        message="&quot;packageWeigth&quot; is translated here but not found in default locale"
+        errorLine1="    &lt;string name=&quot;packageWeigth&quot;>Weight&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-en/strings.xml"
+            line="336"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="ExtraTranslation"
+        message="&quot;select_warehouse&quot; is translated here but not found in default locale"
+        errorLine1="    &lt;string name=&quot;select_warehouse&quot;>DEPO Seçin&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-az/strings.xml"
+            line="467"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="ExtraTranslation"
+        message="&quot;select_warehouse&quot; is translated here but not found in default locale"
+        errorLine1="    &lt;string name=&quot;select_warehouse&quot;>Select a warehouse&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-en/strings.xml"
+            line="468"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="ExtraTranslation"
+        message="&quot;add_picture&quot; is translated here but not found in default locale"
+        errorLine1="    &lt;string name=&quot;add_picture&quot;>Rəsim əlavə et&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-az/strings.xml"
+            line="479"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="ExtraTranslation"
+        message="&quot;add_picture&quot; is translated here but not found in default locale"
+        errorLine1="    &lt;string name=&quot;add_picture&quot;>Add picture&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-en/strings.xml"
+            line="480"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="ExtraTranslation"
+        message="&quot;add_picture&quot; is translated here but not found in default locale"
+        errorLine1="    &lt;string name=&quot;add_picture&quot;>Добавить изображение&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-ru/strings.xml"
+            line="505"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="ExtraTranslation"
+        message="&quot;contral_point_placement&quot; is translated here but not found in default locale"
+        errorLine1="    &lt;string name=&quot;contral_point_placement&quot;>MİQDARI Yerləşdir&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-az/strings.xml"
+            line="530"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="ExtraTranslation"
+        message="&quot;contral_point_placement&quot; is translated here but not found in default locale"
+        errorLine1="    &lt;string name=&quot;contral_point_placement&quot;>Place in lane&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-en/strings.xml"
+            line="530"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="ExtraTranslation"
+        message="&quot;hello_blank_fragment&quot; is translated here but not found in default locale"
+        errorLine1="    &lt;string name=&quot;hello_blank_fragment&quot;>Привет, пустой фрагмент&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-ru/strings.xml"
+            line="673"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="ExtraTranslation"
+        message="&quot;hello_blank_fragment&quot; is translated here but not found in default locale"
+        errorLine1="    &lt;string name=&quot;hello_blank_fragment&quot;>مرحبًا بالجزء الفارغ&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-ar/strings.xml"
+            line="674"
+            column="13"/>
+    </issue>
+
+</issues>
