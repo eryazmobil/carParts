@@ -320,11 +320,10 @@ val appModule = module {
 
     viewModel { LanguageVM() }
 
-    viewModel { (productDto: ProductDto, crossDockDto: CrossDockCheckDto, maxAmount: Int) ->
+    viewModel { (productDto: ProductDto, maxAmount: Int) ->
         CrossDockTransferVM(
             repo = get(),
             productDto = productDto,
-            crossDockDto = crossDockDto,
             maxAmount = maxAmount
         )
     }

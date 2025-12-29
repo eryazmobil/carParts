@@ -12,6 +12,7 @@ import eryaz.software.carParts.data.persistence.SessionManager
 import eryaz.software.carParts.data.persistence.TemporaryCashManager
 import eryaz.software.carParts.data.repositories.WorkActivityRepo
 import eryaz.software.carParts.ui.base.BaseViewModel
+import eryaz.software.carParts.util.SingleLiveEvent
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -29,7 +30,7 @@ class AcceptanceProcessVM(
     private var allowOverload: Boolean = false
 
     val searchProduct = MutableStateFlow("")
-    val showCreateBarcode = MutableSharedFlow<Boolean>()
+    val showCreateBarcode = SingleLiveEvent<Boolean>()
     val actionIsFinished = MutableStateFlow(false)
     val controlSuccess = MutableStateFlow<Boolean>(false)
     val quantity = MutableStateFlow("1")
@@ -54,7 +55,7 @@ class AcceptanceProcessVM(
 
     private val _hasSerial = MutableStateFlow(false)
     val hasSerial = _hasSerial.asStateFlow()
-
+    private var isFetchingBarcode = false
 
     init {
         TemporaryCashManager.getInstance().workActivity?.let {
@@ -111,12 +112,18 @@ class AcceptanceProcessVM(
     }
 
     fun getBarcodeByCode() {
+
+        if (isFetchingBarcode) return
+
+        val query = searchProduct.value.trim()
+        if (query.isEmpty()) return
+
         executeInBackground(
             showErrorDialog = false,
             showProgressDialog = true
         ) {
             repo.getBarcodeByCode(
-                searchProduct.value.trim(),
+                query,
                 SessionManager.companyId
             ).onSuccess {
                 productID = it.product.id
@@ -130,8 +137,10 @@ class AcceptanceProcessVM(
                 }
                 isProductValid()
             }.onError { _, _ ->
-                showCreateBarcode.emit(true)
+                showCreateBarcode.value = true
                 searchProduct.emit("")
+            }.apply {
+                isFetchingBarcode = false
             }
         }
     }

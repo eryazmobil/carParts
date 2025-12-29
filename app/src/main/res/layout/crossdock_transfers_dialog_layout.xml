@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="viewModel"
             type="eryaz.software.carParts.ui.dashboard.inbound.placement.placementDetail.crossdock.CrossDockTransferVM" />
@@ -14,234 +13,272 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        app:sv_ignore_referenced_ids="toolbar">
+        app:onRetryClick="@{()-> viewModel.checkCrossDock()}"
+        app:sv_ignore_referenced_ids="toolbar"
+        app:sv_viewState="@{viewModel.uiState}">
 
-        <eryaz.software.carParts.util.widgets.Toolbar
-            android:id="@+id/toolbar"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            app:navigationIcon="@drawable/back_icon"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:title="@string/crossdock_request" />
+            android:layout_height="match_parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <eryaz.software.carParts.util.widgets.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:navigationIcon="@drawable/back_icon"
+                app:title="@string/crossdock_request" />
+
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:fillViewport="true"
                 android:background="@color/bgColor"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/buttonLayout"
                 app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
-                <TableLayout
-                    android:id="@+id/tableRoot"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:padding="@dimen/_8sdp"
-                    android:stretchColumns="3"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:orientation="vertical"
+                    android:paddingBottom="24dp">
 
-                    <TableRow
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/table_row_bottomline">
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:layout_width="150dp"
-                            android:layout_height="wrap_content"
-                            android:layout_column="1"
-                            android:layout_marginVertical="8dp"
-                            android:fontFamily="@font/roboto_regular"
-                            android:textSize="18sp"
-                            tools:text="@string/product_code" />
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/txt_productcode"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_column="2"
-                            android:text="@{viewModel.productDto.code}"
-                            android:layout_marginVertical="8dp"
-                            android:layout_span="2"
-                            android:fontFamily="@font/sogeoui"
-                            android:textSize="18sp"
-                            tools:text="GDB-400" />
-
-                    </TableRow>
-
-                    <TableRow
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/table_row_bottomline">
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_column="1"
-                            android:layout_marginVertical="8dp"
-                            android:fontFamily="@font/roboto_regular"
-                            android:text="@string/product_name"
-                            android:textSize="18sp" />
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/txt_productname"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_column="2"
-                            android:text="@{viewModel.productDto.definition}"
-                            android:layout_marginVertical="8dp"
-                            android:layout_span="2"
-                            android:fontFamily="@font/roboto_regular"
-                            android:textSize="15sp"
-                            tools:text="FREN BALATA " />
-                    </TableRow>
-
-                    <TableRow
+                    <TableLayout
+                        android:id="@+id/tableRoot"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/table_row_bottomline">
+                        android:layout_marginTop="10dp"
+                        android:padding="@dimen/_8sdp"
+                        android:stretchColumns="3">
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TableRow
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_column="1"
-                            android:layout_marginVertical="8dp"
-                            android:fontFamily="@font/roboto_regular"
-                            android:text="@string/control_point"
-                            android:textSize="18sp" />
+                            android:background="@drawable/table_row_bottomline">
 
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/txt_controlpoint"
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="150dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="1"
+                                android:layout_marginVertical="8dp"
+                                android:fontFamily="@font/roboto_regular"
+                                android:textSize="18sp"
+                                tools:text="@string/product_code" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/txt_productcode"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="2"
+                                android:layout_marginVertical="8dp"
+                                android:layout_span="2"
+                                android:fontFamily="@font/sogeoui"
+                                android:text="@{viewModel.productDto.code}"
+                                android:textSize="18sp"
+                                tools:text="GDB-400" />
+                        </TableRow>
+
+                        <TableRow
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_column="2"
-                            android:layout_marginVertical="8dp"
-                            android:layout_span="2"
-                            android:text="@{viewModel.crossDockDto.orderHeader.controlPoint.code}"
-                            android:fontFamily="@font/roboto_regular"
-                            android:textColor="@color/colorDangerRed"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            tools:text="12" />
-                    </TableRow>
+                            android:background="@drawable/table_row_bottomline">
 
-                    <TableRow
-                        android:layout_width="fill_parent"
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="1"
+                                android:layout_marginVertical="8dp"
+                                android:fontFamily="@font/roboto_regular"
+                                android:text="@string/product_name"
+                                android:textSize="18sp" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/txt_productname"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="2"
+                                android:layout_marginVertical="8dp"
+                                android:layout_span="2"
+                                android:fontFamily="@font/roboto_regular"
+                                android:text="@{viewModel.productDto.definition}"
+                                android:textSize="15sp"
+                                tools:text="FREN BALATA " />
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/table_row_bottomline">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="1"
+                                android:layout_marginVertical="8dp"
+                                android:fontFamily="@font/roboto_regular"
+                                android:text="@string/control_point"
+                                android:textSize="18sp" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/txt_controlpoint"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="2"
+                                android:layout_marginVertical="8dp"
+                                android:layout_span="2"
+                                android:fontFamily="@font/roboto_regular"
+                                android:text="@{viewModel.code}"
+                                android:textColor="@color/colorDangerRed"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                tools:text="12" />
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/table_row_bottomline">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="1"
+                                android:layout_marginVertical="8dp"
+                                android:fontFamily="@font/roboto_regular"
+                                android:text="@string/need_qty"
+                                android:textSize="18sp" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/txt_qty"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="2"
+                                android:layout_marginVertical="8dp"
+                                android:layout_span="2"
+                                android:fontFamily="@font/roboto_regular"
+                                android:text="@{viewModel.quantityCross}"
+                                android:textSize="18sp"
+                                tools:text="5 " />
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/table_row_bottomline">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="1"
+                                android:layout_marginVertical="8dp"
+                                android:fontFamily="@font/roboto_regular"
+                                android:text="@string/transferable_qty"
+                                android:textSize="18sp" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/txt_qty_max"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="2"
+                                android:layout_marginVertical="8dp"
+                                android:layout_span="2"
+                                android:fontFamily="@font/roboto_regular"
+                                android:text="@{viewModel.maxQuantity}"
+                                android:textSize="18sp"
+                                tools:text="20" />
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/table_row_bottomline">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="1"
+                                android:layout_marginVertical="8dp"
+                                android:fontFamily="@font/roboto_regular"
+                                android:text="@string/transfer_qty"
+                                android:textSize="18sp" />
+
+                            <EditText
+                                android:id="@+id/edt_qty"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="2"
+                                android:gravity="center"
+                                android:hint="@string/qty"
+                                android:inputType="number"
+                                android:text="@={viewModel.quantity}"
+                                android:textSize="@dimen/_16sdp"
+                                android:textStyle="bold" />
+                        </TableRow>
+
+                    </TableLayout>
+
+                    <eryaz.software.carParts.util.widgets.TextInputLayout
+                        android:id="@+id/noteTill"
+                        style="@style/Widget.Zeus.SearchInput"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/table_row_bottomline">
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="12dp"
+                        android:elevation="10dp"
+                        android:hint="Menşei">
 
-                        <com.google.android.material.textview.MaterialTextView
-                            android:layout_width="wrap_content"
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/noteEdt"
+                            style="@style/Widget.Zeus.SearchInput"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_column="1"
-                            android:layout_marginVertical="8dp"
-                            android:fontFamily="@font/roboto_regular"
-                            android:text="@string/need_qty"
-                            android:textSize="18sp" />
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/txt_qty"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_column="2"
-                            android:layout_marginVertical="8dp"
-                            android:layout_span="2"
-                            android:text="@{viewModel.crossDockDto.quantity}"
-                            android:fontFamily="@font/roboto_regular"
+                            android:imeOptions="actionDone"
+                            android:inputType="text"
+                            android:text="@={viewModel.note}"
+                            android:textColorHint="@color/logoGray"
                             android:textSize="18sp"
-                            tools:text="5 " />
-                    </TableRow>
+                            app:fontFamily="@font/sogeoui" />
+                    </eryaz.software.carParts.util.widgets.TextInputLayout>
 
-                    <TableRow
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/table_row_bottomline">
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
 
-                        <com.google.android.material.textview.MaterialTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_column="1"
-                            android:layout_marginVertical="8dp"
-                            android:fontFamily="@font/roboto_regular"
-                            android:text="@string/transferable_qty"
-                            android:textSize="18sp" />
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/txt_qty_max"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_column="2"
-                            android:layout_marginVertical="8dp"
-                            android:layout_span="2"
-                            android:text="@{viewModel.maxQuantity}"
-                            android:fontFamily="@font/roboto_regular"
-                            android:textSize="18sp"
-                            tools:text="20" />
-                    </TableRow>
-
-                    <TableRow
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/table_row_bottomline">
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_column="1"
-                            android:layout_marginVertical="8dp"
-                            android:fontFamily="@font/roboto_regular"
-                            android:text="@string/transfer_qty"
-                            android:textSize="18sp" />
-
-                        <EditText
-                            android:id="@+id/edt_qty"
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
-                            android:layout_column="2"
-                            android:gravity="center"
-                            android:hint="@string/qty"
-                            android:inputType="number"
-                            android:text="@={viewModel.quantity}"
-                            android:textSize="@dimen/_16sdp"
-                            android:textStyle="bold" />
-
-                        <View
-                            android:layout_height="20dp"
-                            android:layout_column="3"
-                            android:layout_gravity="center" />
-                    </TableRow>
-                </TableLayout>
+            <LinearLayout
+                android:id="@+id/buttonLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="8dp"
+                android:background="@color/bgColor"
+                app:layout_constraintBottom_toBottomOf="parent">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/shelfPlacement"
                     style="@style/Widget.NewZeusDemo.Button"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_10sdp"
-                    android:layout_marginTop="24dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="4dp"
                     android:text="@string/shelf_placement"
-                    android:textSize="18sp"
-                    app:fontFamily="@font/sogeoui"
-                    app:layout_constraintEnd_toStartOf="@+id/placementToControlPoint"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tableRoot" />
+                    android:textSize="16sp"
+                    app:fontFamily="@font/sogeoui" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/placementToControlPoint"
                     style="@style/Widget.NewZeusDemo.Button"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_10sdp"
-                    android:layout_marginTop="24dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="4dp"
                     android:text="@string/control_point_placement"
-                    android:textSize="18sp"
-                    app:fontFamily="@font/sogeoui"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/shelfPlacement"
-                    app:layout_constraintTop_toBottomOf="@+id/tableRoot" />
+                    android:textSize="16sp"
+                    app:fontFamily="@font/sogeoui" />
+            </LinearLayout>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <include layout="@layout/layout_loading" />
+        <include layout="@layout/layout_error" />
+
     </eryaz.software.carParts.util.widgets.StateView>
-
 </layout>

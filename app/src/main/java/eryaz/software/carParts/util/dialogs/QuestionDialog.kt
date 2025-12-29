@@ -21,19 +21,53 @@ class QuestionDialog(
     private val textMessage: String?,
     private val positiveBtnText: String = "",
     private val negativeBtnText: String = "",
-    private val singleBtnText:String = "",
+    private val singleBtnText: String = "",
     private val negativeBtnViewVisible: Boolean,
     private val icType: Int
 ) : BaseDialogFragment() {
 
-    private lateinit var binding: DialogQuestionMessageBinding
+    private var _binding: DialogQuestionMessageBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        binding = DialogQuestionMessageBinding.inflate(layoutInflater)
+        _binding = DialogQuestionMessageBinding.inflate(layoutInflater)
+
+        setupUI()
+        setupClickListeners()
+        setupIconAndColors()
 
         val builder = AlertDialog.Builder(requireActivity())
         builder.setView(binding.root)
 
+        val dialog = builder.create()
+        dialog.window?.setGravity(Gravity.CENTER)
+
+        isCancelable = false
+
+        return dialog
+    }
+
+    private fun setupUI() {
+        binding.txtDialogHeader.text = textHeader
+        binding.txtDialogMessage.text = textMessage
+        binding.btnDialogPositive.text = positiveBtnText
+        binding.btnDialogNegative.text = negativeBtnText
+        binding.btnDialogSingle.text = singleBtnText
+
+        if (negativeBtnViewVisible) {
+            binding.btnDialogNegative.visibility = View.VISIBLE
+            binding.btnDialogSingle.visibility = View.GONE
+        } else {
+            binding.btnDialogNegative.visibility = View.GONE
+            binding.btnDialogSingle.visibility = View.VISIBLE
+        }
+
+        if (!requireContext().isNetworkAvailable()) {
+            binding.txtDialogMessage.setText(R.string.in_error_dialog_no_internet_connection)
+        }
+    }
+
+    private fun setupClickListeners() {
         binding.btnDialogPositive.setOnSingleClickListener {
             onPositiveClickListener.invoke()
             dismiss()
@@ -44,76 +78,32 @@ class QuestionDialog(
             dismiss()
         }
 
-        binding.btnDialogSingle.text = singleBtnText
-        binding.txtDialogMessage.text = textMessage
-        binding.txtDialogHeader.text = textHeader
-        binding.btnDialogNegative.text = negativeBtnText
-        binding.btnDialogPositive.text = positiveBtnText
-        show(context)
-        if (!negativeBtnViewVisible) {
-            binding.btnDialogSingle.visibility = View.VISIBLE
-            binding.btnDialogSingle.setOnSingleClickListener {
-                dismiss()
-            }
-        } else {
-            binding.btnDialogNegative.visibility = View.VISIBLE
+        binding.btnDialogSingle.setOnSingleClickListener {
+            dismiss()
         }
+    }
+
+    private fun setupIconAndColors() {
+        val context = requireContext()
         when (icType) {
             IconType.Danger.ordinal -> {
                 binding.icDialogStatus.setImageResource(R.drawable.ic_danger)
-                context?.resources?.let {
-                    binding.txtDialogHeader.setTextColor(
-                        it.getColor(
-                            R.color.colorDangerRed,
-                            requireContext().theme
-                        )
-                    )
-                }
-                binding.btnDialogPositive.setBackgroundColor(context.getColorInt(R.color.colorPrimaryBoldBlue))
+                binding.txtDialogHeader.setTextColor(context.getColorInt(R.color.colorDangerRed))
             }
             IconType.Warning.ordinal -> {
                 binding.icDialogStatus.setImageResource(R.drawable.ic_picking_warning)
-                context?.resources?.let {
-                    binding.txtDialogHeader.setTextColor(
-                        it.getColor(
-                            R.color.colorPrimaryYellow,
-                            requireContext().theme
-                        )
-                    )
-                }
-                binding.btnDialogPositive.setBackgroundColor(context.getColorInt(R.color.colorPrimaryBoldBlue))
+                binding.txtDialogHeader.setTextColor(context.getColorInt(R.color.colorPrimaryYellow))
             }
             IconType.Success.ordinal -> {
                 binding.icDialogStatus.setImageResource(R.drawable.ic_done)
-                context?.resources?.let {
-                    binding.txtDialogHeader.setTextColor(
-                        it.getColor(
-                            R.color.colorSuccessGreen,
-                            requireContext().theme
-                        )
-                    )
-                }
-                binding.btnDialogPositive.setBackgroundColor(context.getColorInt(R.color.colorPrimaryBoldBlue))
+                binding.txtDialogHeader.setTextColor(context.getColorInt(R.color.colorSuccessGreen))
             }
-
-            else -> dismiss()
         }
-        val dialog = builder.create()
-//        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.window!!.setGravity(Gravity.CENTER)
-        return dialog
+        binding.btnDialogPositive.setBackgroundColor(context.getColorInt(R.color.colorPrimaryBoldBlue))
     }
 
-    fun show(context: Context?) {
-        if (!context.isNetworkAvailable()) {
-            binding.txtDialogMessage.setText(R.string.in_error_dialog_no_internet_connection)
-        }
-        dialog?.show()
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
-
-
-    override fun dismiss() {
-        dialog?.dismiss()
-    }
-
 }

@@ -108,7 +108,8 @@ class WorkActivityRepo(private val api: WorkActivityService) : BaseRepo() {
         quantity: Int,
         shelfId: Int,
         containerId: Int,
-        crossDockId: Int
+        crossDockId: Int,
+        note: String
     ) = callApi {
         val response = api.updateWaybillPlacementAddQuantity(
             actionId = actionId,
@@ -116,7 +117,8 @@ class WorkActivityRepo(private val api: WorkActivityService) : BaseRepo() {
             quantity = quantity,
             shelfId = shelfId,
             containerId = containerId,
-            crossDockId = crossDockId
+            crossDockId = crossDockId,
+            note = note
         )
         ResponseHandler.handleSuccess(response, response.success)
     }

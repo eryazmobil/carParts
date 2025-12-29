@@ -20,7 +20,8 @@ fun ProductResponse.toDto() = ProductDto(
     manufacturerCode = manufacturerCode.orEmpty(),
     unit = unit.orEmpty(),
     hasSerial = hasSerial,
-    id = id
+    id = id,
+    group1 = group1.orEmpty()
 )
 
 fun ShippingTypeResponse.toDto() = ShippingTypeDto(

@@ -43,5 +43,8 @@ data class ProductResponse(
     val hasSerial: Boolean,
 
     @SerializedName("id")
-    val id: Int
+    val id: Int,
+
+    @SerializedName("group1")
+    val group1: String?,
 )

@@ -13,5 +13,6 @@ data class ProductDto(
     val manufacturerCode: String,
     val unit: String,
     val hasSerial: Boolean,
-    val id: Int
-):Parcelable
+    val id: Int,
+    val group1: String
+) : Parcelable

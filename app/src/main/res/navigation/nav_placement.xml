@@ -63,12 +63,8 @@
             android:name="productDto"
             app:nullable="true"
             app:argType="eryaz.software.carParts.data.models.dto.ProductDto" />
-        <argument
-            android:name="crossDockDto"
-            app:nullable="true"
-            app:argType="eryaz.software.carParts.data.models.dto.CrossDockCheckDto" />
 
-        <argument
+          <argument
             android:name="maxAmount"
             app:argType="integer" />
 

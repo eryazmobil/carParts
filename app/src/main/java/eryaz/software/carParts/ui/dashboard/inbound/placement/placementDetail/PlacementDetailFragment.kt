@@ -19,12 +19,14 @@ import eryaz.software.carParts.data.models.dto.ProductDto
 import eryaz.software.carParts.data.persistence.TemporaryCashManager
 import eryaz.software.carParts.databinding.FragmentPlacementDetailBinding
 import eryaz.software.carParts.ui.base.BaseFragment
+import eryaz.software.carParts.ui.dashboard.inbound.placement.placementDetail.crossdock.CrossDockTransferDialogFragment
 import eryaz.software.carParts.ui.dashboard.recording.dialog.ProductListDialogFragment
 import eryaz.software.carParts.util.adapter.inbound.adapter.SuggestionShelfListAdapter
 import eryaz.software.carParts.util.bindingAdapter.setOnSingleClickListener
 import eryaz.software.carParts.util.dialogs.QuestionDialog
 import eryaz.software.carParts.util.extensions.copyToClipboard
 import eryaz.software.carParts.util.extensions.hideSoftKeyboard
+import eryaz.software.carParts.util.extensions.navigateSafely
 import eryaz.software.carParts.util.extensions.onBackPressedCallback
 import eryaz.software.carParts.util.extensions.parcelable
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -46,7 +48,6 @@ class PlacementDetailFragment : BaseFragment() {
     }
 
     override fun setClicks() {
-
         onBackPressedCallback {
             showConditionDialog(
                 ConfirmationDialogDto(
@@ -133,12 +134,18 @@ class PlacementDetailFragment : BaseFragment() {
     }
 
     override fun subscribeToObservables() {
-
         setFragmentResultListener(ProductListDialogFragment.REQUEST_KEY) { _, bundle ->
             val dto = bundle.parcelable<ProductDto>(ProductListDialogFragment.ARG_PRODUCT_DTO)
             dto?.let {
                 viewModel.setEnteredProduct(it)
             }
+        }
+
+        setFragmentResultListener(CrossDockTransferDialogFragment.REQUEST_KEY) { _, bundle ->
+            bundle.getBoolean(CrossDockTransferDialogFragment.ARG_PLACEMENT)
+                .let {
+                    viewModel.placementProduct(it)
+                }
         }
 
         viewModel.controlSuccess.asLiveData().observe(this) {
@@ -164,20 +171,18 @@ class PlacementDetailFragment : BaseFragment() {
                 }
             }
 
-
         viewModel.hasCrossDock
             .asLiveData()
             .observe(viewLifecycleOwner) {
-            if (viewModel.productDetail.value != null && viewModel.crossDock.value != null) {
-                findNavController().navigate(
-                    PlacementDetailFragmentDirections.actionPlacementDetailFragmentToCrossDockTransferDialogFragment(
+                if (viewModel.productDetail.value != null && viewModel.crossDock.value != null) {
+                    findNavController().navigateSafely(
+                        PlacementDetailFragmentDirections.actionPlacementDetailFragmentToCrossDockTransferDialogFragment(
                             viewModel.productDetail.value,
-                            viewModel.crossDock.value,
                             viewModel.maxPlacementQuantityForCrossDock
                         )
-                )
+                    )
+                }
             }
-        }
     }
 
     private val adapter by lazy {

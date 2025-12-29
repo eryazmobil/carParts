@@ -44,8 +44,7 @@ class TransferStorageVM(
 
     fun getBarcodeByCode() = executeInBackground(
         showProgressDialog = true,
-        showErrorDialog = false,
-        hasNextRequest = true
+        showErrorDialog = false
     ) {
         repo.getBarcodeByCode(
             searchProduct.value.trim(),

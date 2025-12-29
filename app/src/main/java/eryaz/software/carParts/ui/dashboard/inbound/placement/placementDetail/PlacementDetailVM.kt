@@ -68,6 +68,8 @@ class PlacementDetailVM(
     private val _showProductDetailView = MutableStateFlow(false)
     val showProductDetailView = _showProductDetailView.asStateFlow()
 
+    val note = MutableStateFlow("")
+
     init {
         TemporaryCashManager.getInstance().workActivity?.let {
             viewModelScope.launch {
@@ -113,6 +115,8 @@ class PlacementDetailVM(
                 productID = it.product.id
                 placementMultiplierValue.value = it.quantity
                 isProductValid()
+
+                note.emit(it.product.group1)
             }.onError { _, _ ->
                 showError(
                     ErrorDialogDto(
@@ -206,7 +210,6 @@ class PlacementDetailVM(
                 ).onSuccess {
                     _crossDock.emit(it)
                     _hasCrossDock.emit(true)
-                    _showProductDetailView.emit(false)
                 }.onError { _, _ ->
                     getShelfListForPlacement()
                 }
@@ -248,7 +251,8 @@ class PlacementDetailVM(
                     quantity = resultQuantity,
                     shelfId = shelfID,
                     containerId = 0,
-                    crossDockId = 0
+                    crossDockId = 0,
+                    note = note.value
                 ).onSuccess {
                     _controlSuccess.emit(it)
                     _showProductDetailView.emit(false)
@@ -335,6 +339,14 @@ class PlacementDetailVM(
         viewModelScope.launch {
             _productDetail.emit(dto)
             isProductValid()
+        }
+    }
+
+    fun placementProduct(isPlacement: Boolean) {
+        viewModelScope.launch {
+            if (!isPlacement) {
+                _showProductDetailView.emit(false)
+            }
         }
     }
 }

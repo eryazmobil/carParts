@@ -25,6 +25,7 @@ class LoginFragment : BaseFragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         binding.executePendingBindings()
+
         return binding.root
     }
 

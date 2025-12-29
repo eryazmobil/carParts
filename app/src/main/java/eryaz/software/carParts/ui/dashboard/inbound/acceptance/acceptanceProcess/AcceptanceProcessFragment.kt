@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.PopupMenu
+import androidx.core.net.toUri
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.findNavController
@@ -17,6 +18,7 @@ import eryaz.software.carParts.data.models.dto.ErrorDialogDto
 import eryaz.software.carParts.data.models.dto.ProductDto
 import eryaz.software.carParts.data.persistence.TemporaryCashManager
 import eryaz.software.carParts.databinding.FragmentAcceptanceProcessDetailBinding
+import eryaz.software.carParts.ui.EventBus
 import eryaz.software.carParts.ui.base.BaseFragment
 import eryaz.software.carParts.ui.dashboard.recording.dialog.ProductListDialogFragment
 import eryaz.software.carParts.util.bindingAdapter.setOnSingleClickListener
@@ -72,15 +74,15 @@ class AcceptanceProcessFragment : BaseFragment() {
                 binding.searchEdt.requestFocus()
             }
 
-        viewModel.showCreateBarcode
-            .asLiveData()
-            .observe(this) {
-                if (it)
+        viewModel.showCreateBarcode.observe(viewLifecycleOwner) { shouldShow ->
+            if (shouldShow) {
+                val alreadyOpen = parentFragmentManager.findFragmentByTag("dialog")
+
+                if (alreadyOpen == null) {
                     QuestionDialog(
                         onPositiveClickListener = {
-                            findNavController().navigate(
-                                AcceptanceProcessFragmentDirections.actionGlobalCreateBarcodeDialog()
-                            )
+                            EventBus.navigateWithDeeplink.value =
+                                getString(R.string.deeplinkCreateBarcode).toUri()
                         },
                         textHeader = resources.getString(eryaz.software.carParts.data.R.string.attention),
                         textMessage = resources.getString(eryaz.software.carParts.data.R.string.msg_no_barcode_and_new_barcode),
@@ -89,7 +91,10 @@ class AcceptanceProcessFragment : BaseFragment() {
                         negativeBtnViewVisible = true,
                         icType = IconType.Warning.ordinal
                     ).show(parentFragmentManager, "dialog")
+
+                }
             }
+        }
     }
 
     override fun setClicks() {
@@ -159,22 +164,23 @@ class AcceptanceProcessFragment : BaseFragment() {
     }
 
     private fun showFinishDialog() {
-        showConditionDialog(ConfirmationDialogDto(
-            title = getString(R.string.control_finished),
-            message = getString(R.string.all_control_finished),
-            positiveButton = ButtonDto(
-                text = R.string.yes,
-                onClickListener = {
-                    backToPage()
-                }
-            ),
-            negativeButton = ButtonDto(
-                text = R.string.no,
-                onClickListener = {
-                    findNavController().popBackStack()
-                }
-            )
-        ))
+        showConditionDialog(
+            ConfirmationDialogDto(
+                title = getString(R.string.control_finished),
+                message = getString(R.string.all_control_finished),
+                positiveButton = ButtonDto(
+                    text = R.string.yes,
+                    onClickListener = {
+                        backToPage()
+                    }
+                ),
+                negativeButton = ButtonDto(
+                    text = R.string.no,
+                    onClickListener = {
+                        findNavController().popBackStack()
+                    }
+                )
+            ))
     }
 
     private fun popupMenu(view: View) {

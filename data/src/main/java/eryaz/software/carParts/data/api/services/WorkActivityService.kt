@@ -96,7 +96,8 @@ interface WorkActivityService {
         @Query("quantity") quantity: Int,
         @Query("shelfId") shelfId: Int,
         @Query("containerId") containerId: Int,
-        @Query("crossDockId") crossDockId: Int
+        @Query("crossDockId") crossDockId: Int,
+        @Query("mensei") note: String
     ): BaseResponse
 
     @PUT("api/services/app/Work/UpdateTransferRequestPlacementAddQuantity")
