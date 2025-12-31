@@ -36,10 +36,14 @@ class PlacementListVM(private val repo: PlacementRepo) : BaseViewModel() {
     private fun filterData(query: String): List<WorkActivityDto?> {
         val dataList = _placementList.value.orEmpty()
 
-        val filteredList = dataList.filter { data ->
-            data?.client?.name?.contains(query, ignoreCase = true) ?: true
+        if (query.isEmpty()) return dataList
+
+        return dataList.filter { data ->
+            val nameMatch = data?.client?.name?.contains(query, ignoreCase = true) ?: false
+            val codeMatch = data?.client?.code?.contains(query, ignoreCase = true) ?: false
+
+            nameMatch || codeMatch
         }
-        return filteredList
     }
 
     fun getPlacementList() {

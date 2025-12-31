@@ -2,12 +2,14 @@ package eryaz.software.carParts.data.mappers
 
 import eryaz.software.carParts.data.models.dto.OrderPickingDto
 import eryaz.software.carParts.data.models.dto.PickingSuggestionDto
+import eryaz.software.carParts.data.models.dto.ProductAddressControlPointDto
 import eryaz.software.carParts.data.models.dto.StockShelfQuantityDto
 import eryaz.software.carParts.data.models.dto.TransferRequestAllDetailDto
 import eryaz.software.carParts.data.models.dto.WorkActivityDto
 import eryaz.software.carParts.data.models.dto.WorkActivityTypeDto
 import eryaz.software.carParts.data.models.remote.response.OrderPickingResponse
 import eryaz.software.carParts.data.models.remote.response.PickingSuggestionResponse
+import eryaz.software.carParts.data.models.remote.response.ProductAddressControlPointModel
 import eryaz.software.carParts.data.models.remote.response.StockShelfQuantityResponse
 import eryaz.software.carParts.data.models.remote.response.TransferRequestAllDetailResponse
 import eryaz.software.carParts.data.models.remote.response.WorkActivityResponse
@@ -26,7 +28,8 @@ fun WorkActivityResponse.toDto() = WorkActivityDto(
     notes = notes.orEmpty(),
     controlPointDefinition = controlPointDefinition.orEmpty(),
     hasPriority = hasPriority,
-    documentNoStr = documentNoStr
+    documentNoStr = documentNoStr,
+    clientCodeAndName = client?.name+ "\n" + client?.code
 )
 
 fun WorkActivityTypeResponse.toDto() = WorkActivityTypeDto(
@@ -60,5 +63,12 @@ fun TransferRequestAllDetailResponse.toDto() = TransferRequestAllDetailDto(
     quantityShippedAll = quantityShippedAll,
     quantityPickedAll = quantityPickedAll,
     quantityAll = quantityAll,
-    transferRequestDetailPdaDto = transferRequestDetailResponse.map { it.toDto() },
+    transferRequestDetailPdaDto = transferRequestDetailResponse.map { it.toDto() }
+)
+
+fun ProductAddressControlPointModel.toDto() = ProductAddressControlPointDto(
+    id = id,
+    code = code.orEmpty(),
+    definition = definition.orEmpty(),
+    quantity = quantity.toString()
 )

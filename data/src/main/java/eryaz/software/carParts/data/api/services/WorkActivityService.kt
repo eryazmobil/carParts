@@ -1,5 +1,6 @@
 package eryaz.software.carParts.data.api.services
 
+import eryaz.software.carParts.data.models.dto.ProductAddressControlPointDto
 import eryaz.software.carParts.data.models.remote.models.ResultModel
 import eryaz.software.carParts.data.models.remote.request.ProductShelfInsertRequest
 import eryaz.software.carParts.data.models.remote.request.ProductShelfUpdateRequest
@@ -267,5 +268,12 @@ interface WorkActivityService {
         @Query("quantity") quantity: Int,
         @Query("productId") productId: Int
     ): BaseResponse
+
+    @GET("api/services/app/Order/GetControlPointForProductByQuantity")
+    suspend fun getControlPointForProductByQuantity(
+        @Query("companyId") companyId: Int,
+        @Query("warehouseId") warehouseId: Int,
+        @Query("productId") productId: Int
+    ): ResultModel<List<ProductAddressControlPointModel>>
 
 }

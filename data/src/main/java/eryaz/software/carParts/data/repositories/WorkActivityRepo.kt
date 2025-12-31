@@ -425,4 +425,18 @@ class WorkActivityRepo(private val api: WorkActivityService) : BaseRepo() {
 
         ResponseHandler.handleSuccess(response, response)
     }
+
+    suspend fun getControlPointForProductByQuantity(
+        companyId: Int,
+        warehouseId: Int,
+        productId: Int
+    ) = callApi {
+        val response = api.getControlPointForProductByQuantity(
+            companyId = companyId,
+            warehouseId = warehouseId,
+            productId = productId
+        )
+
+        ResponseHandler.handleSuccess(response, response.result.map { it.toDto() })
+    }
 }

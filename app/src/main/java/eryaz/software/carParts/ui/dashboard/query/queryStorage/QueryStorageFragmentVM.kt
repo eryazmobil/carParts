@@ -5,6 +5,7 @@ import eryaz.software.carParts.R
 import eryaz.software.carParts.data.api.utils.onError
 import eryaz.software.carParts.data.api.utils.onSuccess
 import eryaz.software.carParts.data.models.dto.ErrorDialogDto
+import eryaz.software.carParts.data.models.dto.ProductAddressControlPointDto
 import eryaz.software.carParts.data.models.dto.ProductDto
 import eryaz.software.carParts.data.models.dto.ProductShelfQuantityDto
 import eryaz.software.carParts.data.models.dto.ProductStorageQuantityDto
@@ -32,14 +33,21 @@ class QueryStorageFragmentVM(
     private val _shelfList = MutableStateFlow(listOf<ProductShelfQuantityDto>())
     val shelfList = _shelfList.asStateFlow()
 
+    private val _controlPointList = MutableStateFlow(listOf<ProductAddressControlPointDto>())
+    val controlPointList = _controlPointList.asStateFlow()
+
+    var productId = 0
+
     fun getBarcodeByCode() = executeInBackground(showProgressDialog = true) {
         repo.getBarcodeByCode(
             searchProduct.value.trim(),
             SessionManager.companyId
         ).onSuccess {
+            productId = it.product.id
             _productDetail.emit(it.product)
             getProductStorageQuantityList(it.product.id)
             getProductShelfQuantityList(it.product.id)
+            getProductControlPoint()
         }.onError { message, _ ->
             _showProductDetail.emit(false)
             showError(
@@ -85,5 +93,17 @@ class QueryStorageFragmentVM(
         }
         getProductStorageQuantityList(it.id)
         getProductShelfQuantityList(it.id)
+    }
+
+    fun getProductControlPoint() {
+        executeInBackground(showProgressDialog = true) {
+            repo.getControlPointForProductByQuantity(
+                companyId = SessionManager.companyId,
+                warehouseId = SessionManager.warehouseId,
+                productId = productId
+            ).onSuccess {
+                _controlPointList.emit(it)
+            }
+        }
     }
 }

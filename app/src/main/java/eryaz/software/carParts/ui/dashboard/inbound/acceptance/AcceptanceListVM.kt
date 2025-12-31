@@ -33,14 +33,17 @@ class AcceptanceListVM(private val repo: WorkActivityRepo) : BaseViewModel() {
             value = filterData(query)
         }
     }
-
     private fun filterData(query: String): List<WorkActivityDto?> {
         val dataList = _acceptanceList.value.orEmpty()
 
-        val filteredList = dataList.filter { data ->
-            data?.client?.name?.contains(query, ignoreCase = true) ?: true
+        if (query.isEmpty()) return dataList
+
+        return dataList.filter { data ->
+            val nameMatch = data?.client?.name?.contains(query, ignoreCase = true) ?: false
+            val codeMatch = data?.client?.code?.contains(query, ignoreCase = true) ?: false
+
+            nameMatch || codeMatch
         }
-        return filteredList
     }
 
     fun getWaybillWorkActivityList() {

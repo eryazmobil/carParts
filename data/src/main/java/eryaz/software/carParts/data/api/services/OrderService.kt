@@ -69,7 +69,7 @@ interface OrderService {
         @Query("controlPointId") controlPointId: Int
     ): ResultModel<List<OrderHeaderResponse>>
 
-    @GET("api/services/app/Order/GetOrderDetailList")
+    @GET("api/services/app/Order/GetOrderDetailListByPicking")
     suspend fun getOrderDetailList(
         @Query("headerId") headerId: Int
     ): ResultModel<List<OrderDetailResponse>>

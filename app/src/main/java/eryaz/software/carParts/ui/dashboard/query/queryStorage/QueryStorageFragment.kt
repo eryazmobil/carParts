@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import eryaz.software.carParts.data.models.dto.ProductDto
 import eryaz.software.carParts.databinding.FragmentQueryStorageBinding
 import eryaz.software.carParts.ui.base.BaseFragment
+import eryaz.software.carParts.ui.dashboard.query.adapter.ControlPointProductQuantityAdapter
 import eryaz.software.carParts.ui.dashboard.query.adapter.ShelfProductQuantityAdapter
 import eryaz.software.carParts.ui.dashboard.query.adapter.StorageProductQuantityAdapter
 import eryaz.software.carParts.ui.dashboard.recording.dialog.ProductListDialogFragment
@@ -69,6 +70,11 @@ class QueryStorageFragment : BaseFragment() {
                 shelfAdapter.submitList(it)
             }
 
+        viewModel.controlPointList.asLiveData()
+            .observe(viewLifecycleOwner) {
+                controlPointAdapter.submitList(it)
+            }
+
         setFragmentResultListener(ProductListDialogFragment.REQUEST_KEY) { _, bundle ->
             val dto = bundle.parcelable<ProductDto>(ProductListDialogFragment.ARG_PRODUCT_DTO)
             dto?.let {
@@ -86,6 +92,12 @@ class QueryStorageFragment : BaseFragment() {
     private val shelfAdapter by lazy(LazyThreadSafetyMode.NONE) {
         ShelfProductQuantityAdapter().also {
             binding.recyclerViewForShelf.adapter = it
+        }
+    }
+
+    private val controlPointAdapter by lazy(LazyThreadSafetyMode.NONE) {
+        ControlPointProductQuantityAdapter().also {
+            binding.controlPointRecyclerView.adapter = it
         }
     }
 

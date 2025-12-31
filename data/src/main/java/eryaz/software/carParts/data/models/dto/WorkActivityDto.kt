@@ -16,5 +16,6 @@ data class WorkActivityDto(
     val notes: String,
     val controlPointDefinition: String?,
     val documentNoStr: String?,
-    val hasPriority: Boolean
+    val hasPriority: Boolean,
+    val clientCodeAndName : String
 ):Parcelable

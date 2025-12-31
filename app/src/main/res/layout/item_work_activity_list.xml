@@ -45,7 +45,7 @@
                 android:layout_marginStart="20dp"
                 android:includeFontPadding="false"
                 android:paddingVertical="4dp"
-                android:text="@{dto.client.name.trim()}"
+                android:text="@{dto.clientCodeAndName}"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"

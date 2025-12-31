@@ -1,5 +1,6 @@
 package eryaz.software.carParts.ui.dashboard.outbound.controlPoint.orderHeaderDialog.controlPointDetail
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import eryaz.software.carParts.R
 import eryaz.software.carParts.data.api.utils.onError
@@ -52,11 +53,17 @@ class ControlPointDetailVM(
     private val _productCode = MutableStateFlow("")
     val productCode = _productCode.asStateFlow()
 
+    private val _willControlled = MutableStateFlow("")
+    val willControlled = _willControlled.asStateFlow()
+
     private val _productDetail = MutableStateFlow<ProductDto?>(null)
     val productDetail = _productDetail.asStateFlow()
 
     private val _showProductDetail = MutableStateFlow(false)
     val showProductDetail = _showProductDetail.asStateFlow()
+
+    private val _showProductControl = MutableStateFlow(false)
+    val showProductControl = _showProductControl.asStateFlow()
 
     private val _scrollToPosition = MutableSharedFlow<Int>()
     val scrollToPosition = _scrollToPosition.asSharedFlow()
@@ -102,7 +109,7 @@ class ControlPointDetailVM(
                 code = searchProduct.value.trim(), companyId = SessionManager.companyId
             ).onSuccess {
                 productID = it.product.id
-
+                findProductForControl()
                 orderDetailList.value.indexOfFirst { dto -> dto.product.id == productID }
                     .takeIf { index -> index >= 0 }?.apply {
                         _scrollToPosition.emit(this)
@@ -112,6 +119,7 @@ class ControlPointDetailVM(
                     addQuantityForControl(1)
                 } else {
                     _showProductDetail.emit(true)
+                    _showProductControl.emit(true)
                     _productDetail.emit(it.product)
                 }
 
@@ -121,6 +129,8 @@ class ControlPointDetailVM(
                         titleRes = R.string.error, messageRes = R.string.msg_no_barcode
                     )
                 )
+            }.apply {
+                searchProduct.emit("")
             }
         }
     }
@@ -137,9 +147,14 @@ class ControlPointDetailVM(
             ).onSuccess {
                 searchProduct.emit("")
                 quantity.emit("")
+
+                _showProductDetail.emit(false)
+                _showProductControl.emit(false)
                 if (it.isNotEmpty()) {
                     getOrderListDetail()
                 }
+
+
             }
         }
     }
@@ -192,11 +207,30 @@ class ControlPointDetailVM(
 
     fun setEnteredProduct(dto: ProductDto) {
         productID = dto.id
+
+        findProductForControl()
         viewModelScope.launch {
             _showProductDetail.emit(true)
+            _showProductControl.emit(true)
             searchProduct.emit("")
             _productDetail.emit(dto)
         }
     }
 
+    fun findProductForControl() {
+        Log.d("TAG", "findProductForControl: ")
+        viewModelScope.launch {
+            val orderDetail = orderDetailList.value.find { product ->
+                product.product.id == productID
+            }
+            Log.d("TAG", "$orderDetail")
+            if (orderDetail != null) {
+                val shipped = orderDetail.quantityShipped.toDoubleOrNull() ?: 0.0
+                val collected = orderDetail.quantityCollected.toDoubleOrNull() ?: 0.0
+                val remainingToCollect = collected - shipped
+
+                _willControlled.emit(remainingToCollect.toString())
+            }
+        }
+    }
 }
