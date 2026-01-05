@@ -10,6 +10,7 @@ import eryaz.software.carParts.data.models.remote.request.BarcodeRequestModel
 import eryaz.software.carParts.data.persistence.SessionManager
 import eryaz.software.carParts.data.repositories.BarcodeRepo
 import eryaz.software.carParts.ui.base.BaseViewModel
+import eryaz.software.carParts.util.extensions.toIntOrZero
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,7 +23,7 @@ class RecordBarcodeVM(private val barcodeRepo: BarcodeRepo) : BaseViewModel() {
     val createdBarcode = MutableSharedFlow<Boolean>()
     val searchProductBarcode = MutableStateFlow("")
     val searchProductCode = MutableStateFlow("")
-    val enteredQuantity = MutableStateFlow("")
+    val enteredQuantity = MutableStateFlow("1")
 
     private val _productDetail = MutableStateFlow<ProductDto?>(null)
     val productDetail = _productDetail.asStateFlow()
@@ -80,7 +81,7 @@ class RecordBarcodeVM(private val barcodeRepo: BarcodeRepo) : BaseViewModel() {
                 productId = productID,
                 companyId = SessionManager.companyId,
                 code = searchProductBarcode.value,
-                quantity = enteredQuantity.value.toInt()
+                quantity = enteredQuantity.value.toIntOrZero()
             )
             executeInBackground {
                 barcodeRepo.createBarcode(

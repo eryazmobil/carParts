@@ -5,6 +5,7 @@ import eryaz.software.carParts.R
 import eryaz.software.carParts.data.api.utils.onError
 import eryaz.software.carParts.data.api.utils.onSuccess
 import eryaz.software.carParts.data.models.dto.ErrorDialogDto
+import eryaz.software.carParts.data.models.dto.PackageDetailDto
 import eryaz.software.carParts.data.models.dto.ProductAddressControlPointDto
 import eryaz.software.carParts.data.models.dto.ProductDto
 import eryaz.software.carParts.data.models.dto.ProductShelfQuantityDto
@@ -30,6 +31,9 @@ class QueryStorageFragmentVM(
     private val _storageList = MutableStateFlow(listOf<ProductStorageQuantityDto>())
     val storageList = _storageList.asStateFlow()
 
+    private val _packageList = MutableStateFlow(listOf<PackageDetailDto>())
+    val packageList = _packageList.asStateFlow()
+
     private val _shelfList = MutableStateFlow(listOf<ProductShelfQuantityDto>())
     val shelfList = _shelfList.asStateFlow()
 
@@ -48,6 +52,7 @@ class QueryStorageFragmentVM(
             getProductStorageQuantityList(it.product.id)
             getProductShelfQuantityList(it.product.id)
             getProductControlPoint()
+            getPackageDetailListByProductId(it.product.id)
         }.onError { message, _ ->
             _showProductDetail.emit(false)
             showError(
@@ -84,6 +89,16 @@ class QueryStorageFragmentVM(
             ).onSuccess {
                 _shelfList.emit(it)
                 _showProductDetail.emit(true)
+            }
+        }
+
+    private fun getPackageDetailListByProductId(id: Int) =
+        executeInBackground(showProgressDialog = true) {
+
+            repo.getPackageDetailListByProductId(
+                productId = id
+            ).onSuccess {
+                _packageList.emit(it)
             }
         }
 

@@ -24,6 +24,7 @@ import eryaz.software.carParts.util.bindingAdapter.setOnSingleClickListener
 import eryaz.software.carParts.util.extensions.hideSoftKeyboard
 import eryaz.software.carParts.util.extensions.observe
 import eryaz.software.carParts.util.extensions.parcelable
+import eryaz.software.carParts.util.extensions.toIntOrZero
 import eryaz.software.carParts.util.extensions.toast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -71,7 +72,7 @@ class ControlPointDetailFragment : BaseFragment() {
         }
 
         binding.controlBtn.setOnSingleClickListener {
-            viewModel.addQuantityForControl(viewModel.quantity.value.toInt())
+            viewModel.addQuantityForControl(viewModel.quantity.value.toIntOrZero())
         }
 
         binding.packageSpinner.onItemSelectedListener =
@@ -130,9 +131,25 @@ class ControlPointDetailFragment : BaseFragment() {
             }
         }
 
+        viewModel.showProductDetail.asLiveData().observe(this){
+            if (it)
+                binding.quantityEdt.requestFocus()
+        }
+
+        viewModel.searchList()
+            .observe(viewLifecycleOwner) {
+                adapter.submitList(it)
+            }
+
         viewModel.serialCheckBox.observe(this) {
             if (binding.quantityEdt.hasFocus())
                 binding.quantityEdt.hideSoftKeyboard()
+        }
+
+        viewModel.controlSuccess.asLiveData().observe(this){
+            if (it)
+                binding.searchEdt.requestFocus()
+
         }
 
         viewModel.orderDetailList.observe(this) {
@@ -166,8 +183,4 @@ class ControlPointDetailFragment : BaseFragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        binding.searchEdt.requestFocus()
-    }
 }

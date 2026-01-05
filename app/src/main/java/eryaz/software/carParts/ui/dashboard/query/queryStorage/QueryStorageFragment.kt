@@ -12,6 +12,7 @@ import eryaz.software.carParts.data.models.dto.ProductDto
 import eryaz.software.carParts.databinding.FragmentQueryStorageBinding
 import eryaz.software.carParts.ui.base.BaseFragment
 import eryaz.software.carParts.ui.dashboard.query.adapter.ControlPointProductQuantityAdapter
+import eryaz.software.carParts.ui.dashboard.query.adapter.ItemPackageDetailAdapter
 import eryaz.software.carParts.ui.dashboard.query.adapter.ShelfProductQuantityAdapter
 import eryaz.software.carParts.ui.dashboard.query.adapter.StorageProductQuantityAdapter
 import eryaz.software.carParts.ui.dashboard.recording.dialog.ProductListDialogFragment
@@ -25,6 +26,7 @@ class QueryStorageFragment : BaseFragment() {
     private val binding by lazy(LazyThreadSafetyMode.NONE) {
         FragmentQueryStorageBinding.inflate(layoutInflater)
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -54,7 +56,7 @@ class QueryStorageFragment : BaseFragment() {
 
         binding.searchTil.setEndIconOnClickListener {
             findNavController().navigate(
-               QueryStorageFragmentDirections.actionQueryProductFragmentToProductListDialogFragment()
+                QueryStorageFragmentDirections.actionQueryProductFragmentToProductListDialogFragment()
             )
         }
     }
@@ -68,6 +70,11 @@ class QueryStorageFragment : BaseFragment() {
         viewModel.shelfList.asLiveData()
             .observe(viewLifecycleOwner) {
                 shelfAdapter.submitList(it)
+            }
+
+        viewModel.packageList.asLiveData()
+            .observe(viewLifecycleOwner) {
+                packageDetailAdapter.submitList(it)
             }
 
         viewModel.controlPointList.asLiveData()
@@ -98,6 +105,12 @@ class QueryStorageFragment : BaseFragment() {
     private val controlPointAdapter by lazy(LazyThreadSafetyMode.NONE) {
         ControlPointProductQuantityAdapter().also {
             binding.controlPointRecyclerView.adapter = it
+        }
+    }
+
+    private val packageDetailAdapter by lazy(LazyThreadSafetyMode.NONE) {
+        ItemPackageDetailAdapter().also {
+            binding.packageRecyclerView.adapter = it
         }
     }
 

@@ -6,6 +6,7 @@ data class WaybillListDetailDto(
     val quantityOrder: Int,
     val quantityPlaced: Int,
     val quantityControlled: String,
+    val placement: String,
     val id: Int
 ) {
     fun getQuantityForPlacement(quantityControlled: Int, quantity: Int): Int {

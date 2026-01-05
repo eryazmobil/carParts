@@ -19,6 +19,9 @@ data class WaybillListDetailResponse(
     @SerializedName("quantityControlled")
     val quantityControlled: Int,
 
+    @SerializedName("placement")
+    val placement: String?,
+
     @SerializedName("id")
     val id: Int
 )

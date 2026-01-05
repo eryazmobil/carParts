@@ -23,15 +23,15 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/productCode"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="14dp"
                 android:fontFamily="@font/sogeoui"
-                android:gravity="center"
+                android:gravity="start"
                 android:minHeight="32dp"
                 android:text="@{dto.product.code}"
                 android:textColor="@color/black"
-                android:textSize="24sp"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toStartOf="@+id/quantityTitle"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -39,7 +39,7 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/productDef"
-                android:layout_width="@dimen/_200sdp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="14dp"
                 android:gravity="start"
@@ -47,7 +47,7 @@
                 android:minHeight="32dp"
                 android:text="@{dto.product.definition}"
                 android:textColor="@color/black"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toStartOf="@+id/controlTitle"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -149,16 +149,32 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/productManufacturer"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="14dp"
-                android:gravity="center"
+                android:gravity="start"
                 android:minHeight="32dp"
                 android:text="@{dto.product.manufacturer}"
                 android:textColor="@color/black"
-                android:textSize="18sp"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@+id/placementTitle"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/productDef" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/placement"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:minHeight="32dp"
+                android:layout_marginStart="14dp"
+                android:text="@{dto.placement}"
+                isVisibleElseGone="@{!dto.placement.empty}"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/statusValueTxt" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

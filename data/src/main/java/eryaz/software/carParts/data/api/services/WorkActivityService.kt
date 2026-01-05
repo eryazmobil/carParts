@@ -1,5 +1,6 @@
 package eryaz.software.carParts.data.api.services
 
+import eryaz.software.carParts.data.models.dto.PackageDetailDto
 import eryaz.software.carParts.data.models.dto.ProductAddressControlPointDto
 import eryaz.software.carParts.data.models.remote.models.ResultModel
 import eryaz.software.carParts.data.models.remote.request.ProductShelfInsertRequest
@@ -275,5 +276,10 @@ interface WorkActivityService {
         @Query("warehouseId") warehouseId: Int,
         @Query("productId") productId: Int
     ): ResultModel<List<ProductAddressControlPointModel>>
+
+    @GET("api/services/app/Order/GetPackageDetailListByProductId")
+    suspend fun getPackageDetailListByProductId(
+        @Query("productId") productId: Int
+    ): ResultModel<List<PackageDetailDto>>
 
 }

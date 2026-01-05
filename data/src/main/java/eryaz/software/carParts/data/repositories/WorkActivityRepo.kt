@@ -439,4 +439,14 @@ class WorkActivityRepo(private val api: WorkActivityService) : BaseRepo() {
 
         ResponseHandler.handleSuccess(response, response.result.map { it.toDto() })
     }
+
+    suspend fun getPackageDetailListByProductId(
+        productId: Int
+    ) = callApi {
+        val response = api.getPackageDetailListByProductId(
+            productId = productId
+        )
+
+        ResponseHandler.handleSuccess(response, response.result)
+    }
 }

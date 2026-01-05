@@ -32,7 +32,7 @@ class AcceptanceProcessVM(
     val searchProduct = MutableStateFlow("")
     val showCreateBarcode = SingleLiveEvent<Boolean>()
     val actionIsFinished = MutableStateFlow(false)
-    val controlSuccess = MutableStateFlow<Boolean>(false)
+    val controlSuccess = MutableSharedFlow<Boolean>()
     val quantity = MutableStateFlow("1")
     val multiplier = MutableStateFlow("")
     val qtyContainer = MutableStateFlow(0)

@@ -243,13 +243,38 @@
                         app:layout_constraintTop_toBottomOf="@id/quantityTill" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+                <eryaz.software.carParts.util.widgets.TextInputLayout
+                    android:id="@+id/search_product_barcode"
+                    style="@style/Widget.Zeus.SearchInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="24dp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:elevation="10dp"
+                    android:hint="@string/search_product_code"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/itemGroup">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/search_txt"
+                        style="@style/Widget.Zeus.SearchInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textEmailAddress"
+                        android:text="@={viewModel.search}"
+                        android:textColorHint="@color/logoGray"
+                        android:textSize="18sp"
+                        app:fontFamily="@font/sogeoui" />
+                </eryaz.software.carParts.util.widgets.TextInputLayout>
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/itemHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="@dimen/_8sdp"
-                    app:layout_constraintTop_toBottomOf="@id/itemGroup">
+                    app:layout_constraintTop_toBottomOf="@id/search_product_barcode">
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/productName"
@@ -342,6 +367,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_20sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/recyclerView">
 
                     <com.google.android.material.textview.MaterialTextView
@@ -351,7 +378,7 @@
                         android:background="@color/primaryDarkColor"
                         android:fontFamily="@font/sogeoui"
                         android:padding="@dimen/_4sdp"
-                        android:text="@string/grand_total_dat"
+                        android:text="@string/quantity_total"
                         android:textColor="@color/white"
                         android:textSize="15sp"
                         app:layout_constraintEnd_toStartOf="@id/orderQuantityTxtFooter"

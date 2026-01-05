@@ -1,6 +1,8 @@
 package eryaz.software.carParts.ui.dashboard.outbound.controlPoint.orderHeaderDialog.controlPointDetail
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import eryaz.software.carParts.R
 import eryaz.software.carParts.data.api.utils.onError
@@ -9,6 +11,7 @@ import eryaz.software.carParts.data.models.dto.ErrorDialogDto
 import eryaz.software.carParts.data.models.dto.OrderDetailDto
 import eryaz.software.carParts.data.models.dto.PackageDto
 import eryaz.software.carParts.data.models.dto.ProductDto
+import eryaz.software.carParts.data.models.dto.WorkActivityDto
 import eryaz.software.carParts.data.persistence.SessionManager
 import eryaz.software.carParts.data.repositories.OrderRepo
 import eryaz.software.carParts.data.repositories.WorkActivityRepo
@@ -20,6 +23,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlin.collections.filter
+import kotlin.collections.orEmpty
 
 class ControlPointDetailVM(
     private val orderRepo: OrderRepo,
@@ -34,7 +39,10 @@ class ControlPointDetailVM(
     var selectedPackageId: Int = 0
     var selectedPackageDto: PackageDto? = null
 
+    val search = MutableLiveData("")
+
     val serialCheckBox = MutableStateFlow(false)
+    val controlSuccess = MutableSharedFlow<Boolean>()
     var quantityCollected = MutableStateFlow("")
     var quantityShipped = MutableStateFlow("")
     var quantityOrder = MutableStateFlow("")
@@ -77,11 +85,27 @@ class ControlPointDetailVM(
         getPackageList()
     }
 
+    fun searchList() = search.switchMap { query ->
+        MutableLiveData<List<OrderDetailDto?>>().apply {
+            value = filterData(query)
+        }
+    }
+
+    private fun filterData(query: String): List<OrderDetailDto?> {
+        val dataList = _orderDetailList.value
+
+        val filteredList = dataList.filter { data ->
+            data.product.code.contains(query, ignoreCase = true)
+        }
+        return filteredList
+    }
+
     private fun getOrderListDetail() {
         executeInBackground(showProgressDialog = true) {
             orderRepo.getOrderDetailList(headerId = orderHeaderId).onSuccess {
                 if (it.isNotEmpty()) {
                     _orderDetailList.emit(it)
+                    controlSuccess.emit(true)
 
                     calculateDatQuantity()
                 } else {
@@ -157,6 +181,18 @@ class ControlPointDetailVM(
 
             }
         }
+    }
+
+    fun fake() {
+        viewModelScope.launch {
+            searchProduct.emit("")
+            quantity.emit("")
+
+            _showProductDetail.emit(false)
+            _showProductControl.emit(false)
+            getOrderListDetail()
+        }
+
     }
 
     fun getPackageList() {

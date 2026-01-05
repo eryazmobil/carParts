@@ -82,8 +82,10 @@ class PlacementDetailVM(
 
     }
 
-    private fun getWaybillListDetail() {
-        executeInBackground(_uiState) {
+    private fun getWaybillListDetail(
+    ) {
+        executeInBackground(_uiState,
+            showProgressDialog = true) {
             val workActivityID =
                 TemporaryCashManager.getInstance().workActivity?.workActivityId ?: 0
             repo.getWaybillListDetail(
@@ -167,6 +169,7 @@ class PlacementDetailVM(
 
         viewModelScope.launch {
             checkProductInPlacementList.emit(allFinished)
+            _controlSuccess.emit(true)
         }
 
         return allFinished
@@ -254,7 +257,7 @@ class PlacementDetailVM(
                     crossDockId = 0,
                     note = note.value
                 ).onSuccess {
-                    _controlSuccess.emit(it)
+                    _controlSuccess.emit(true)
                     _showProductDetailView.emit(false)
                     getWaybillListDetail()
 
@@ -273,6 +276,14 @@ class PlacementDetailVM(
                     )
                 }
             }
+        }
+    }
+
+    fun fakeControl() {
+        viewModelScope.launch {
+            _controlSuccess.emit(true)
+            _showProductDetailView.emit(false)
+            getWaybillListDetail()
         }
     }
 

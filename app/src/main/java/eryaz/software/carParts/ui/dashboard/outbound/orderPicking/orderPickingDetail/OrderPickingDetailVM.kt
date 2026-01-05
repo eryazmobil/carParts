@@ -38,6 +38,8 @@ class OrderPickingDetailVM(
     val shelfAddress = MutableStateFlow("")
     private val fifoCode = MutableStateFlow(" ")
     val parentView = MutableStateFlow(false)
+
+    val stockNotEnough = MutableSharedFlow<Boolean>()
     val productRequestFocus = MutableSharedFlow<Boolean>()
 
     var productId: Int = 0
@@ -114,7 +116,7 @@ class OrderPickingDetailVM(
                     if (!forRefresh)
                         showNext()
                 } else {
-                    parentView.emit(true)
+                    checkAllOrderCompleted(it.orderDetailList)
                 }
 
             } else {
@@ -131,6 +133,16 @@ class OrderPickingDetailVM(
                 )
             )
         }
+    }
+
+    private suspend fun checkAllOrderCompleted(orderList: List<OrderDetailDto>) {
+        val allIsCollected = orderList.all { it.quantityCollected == it.quantity }
+        if (allIsCollected) {
+            parentView.emit(true)
+        } else {
+            stockNotEnough.emit(true)
+        }
+
     }
 
     private fun createStockOut() {

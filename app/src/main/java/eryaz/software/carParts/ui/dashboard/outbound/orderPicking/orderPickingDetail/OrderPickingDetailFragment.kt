@@ -102,6 +102,21 @@ class OrderPickingDetailFragment : BaseFragment() {
             }
         }
 
+        viewModel.stockNotEnough.asLiveData().observe(this) {
+            if (it) {
+                binding.parentView.visibility = View.GONE
+                errorDialog.show(
+                    context, ErrorDialogDto(
+                        titleRes = R.string.warning,
+                        messageRes = R.string.work_activity_error_1,
+                        positiveButton = ButtonDto(text = R.string.close_screen, onClickListener = {
+                            viewModel.checkCrossDockNeedByActionId()
+                        })
+                    )
+                )
+            }
+        }
+
         viewModel.createStockOut.observe(this) {
             if (it) {
                 toast(getString(R.string.success))
