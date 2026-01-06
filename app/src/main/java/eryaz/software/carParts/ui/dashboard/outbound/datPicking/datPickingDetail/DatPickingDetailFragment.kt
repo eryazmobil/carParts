@@ -38,7 +38,7 @@ class DatPickingDetailFragment : BaseFragment() {
 
     override fun setClicks() {
         onBackPressedCallback {
-            viewModel.checkCrossDockNeedByActionId()
+            viewModel.finishWorkAction()
         }
 
         binding.toolbar.setNavigationOnClickListener {
@@ -72,7 +72,7 @@ class DatPickingDetailFragment : BaseFragment() {
                         titleRes = R.string.warning,
                         messageRes = R.string.work_activity_error_1,
                         positiveButton = ButtonDto(text = R.string.close_screen, onClickListener = {
-                            viewModel.checkCrossDockNeedByActionId()
+                            viewModel.finishWorkAction
                         })
                     )
                 )

@@ -15,8 +15,8 @@ android {
         applicationId "eryaz.software.carParts"
         minSdk 23
         targetSdk 34
-        versionCode 6
-        versionName "1.0.6"
+        versionCode 9
+        versionName "1.0.9"
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
