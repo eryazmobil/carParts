@@ -44,6 +44,8 @@ class OrderPickingDetailVM(
 
     var productId: Int = 0
 
+    var orderDetailList: List<OrderDetailDto> = emptyList()
+
     private var orderPickingDto: OrderPickingDto? = null
     private var selectedOrderDetailProduct: OrderDetailDto? = null
 
@@ -109,6 +111,8 @@ class OrderPickingDetailVM(
             userId = SessionManager.userId
         ).onSuccess {
             if (it.orderDetailList.isNotEmpty()) {
+
+                orderDetailList = it.orderDetailList
 
                 if (it.pickingSuggestionList.isNotEmpty()) {
                     orderPickingDto = it
@@ -398,15 +402,16 @@ class OrderPickingDetailVM(
 
                 orderPickingDto?.pickingSuggestionList?.indexOfFirst { it.product.id == orderDetail.product.id }
                     ?.let { index ->
-                        selectedSuggestionIndex = index - 1
-                        _pickedAndOrderQty.emit(
-                            "${orderPickingDto?.pickingSuggestionList?.get(index)?.quantityPicked} / ${
-                                orderPickingDto?.pickingSuggestionList?.get(
-                                    index
-                                )?.quantityWillBePicked
-                            }"
-                        )
-
+                        if (index != -1) {
+                            selectedSuggestionIndex = index - 1
+                            _pickedAndOrderQty.emit(
+                                "${orderPickingDto?.pickingSuggestionList?.get(index)?.quantityPicked} / ${
+                                    orderPickingDto?.pickingSuggestionList?.get(
+                                        index
+                                    )?.quantityWillBePicked
+                                }"
+                            )
+                        }
                         showNext()
                     }
             }

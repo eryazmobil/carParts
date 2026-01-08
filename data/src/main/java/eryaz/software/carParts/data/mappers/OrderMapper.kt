@@ -24,9 +24,9 @@ import eryaz.software.carParts.data.utils.getFormattedDate
 
 fun OrderHeaderResponse.toDto() = OrderHeaderDto(
     id = id,
-    company = company.toDto(),
+    company = company?.toDto(),
     client = client?.toDto(),
-    warehouse = warehouse.toDto(),
+    warehouse = warehouse?.toDto(),
     notes = notes.orEmpty(),
     shippingType = shippingType?.toDto(),
     controlPoint = controlPoint?.toDto(),

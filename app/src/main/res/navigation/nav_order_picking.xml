@@ -40,7 +40,11 @@
         android:id="@+id/orderDetailListDialog"
         android:name="eryaz.software.carParts.ui.dashboard.outbound.orderPicking.orderPickingDetail.dialog.OrderDetailListDialog"
         android:label="OrderDetailListDialog"
-        tools:layout="@layout/order_detail_dialog_list" />
+        tools:layout="@layout/order_detail_dialog_list" >
+        <argument
+            android:name="orderDetailList"
+            app:argType="eryaz.software.carParts.data.models.dto.OrderDetailDto[]" />
+    </dialog>
     <dialog
         android:id="@+id/shelfListDialog"
         android:name="eryaz.software.carParts.ui.dashboard.outbound.orderPicking.orderPickingDetail.dialog.ShelfListDialog"

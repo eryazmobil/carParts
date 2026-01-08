@@ -4,14 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.navArgs
 import eryaz.software.carParts.databinding.OrderDetailDialogListBinding
 import eryaz.software.carParts.ui.base.BaseDialogFragment
 import eryaz.software.carParts.util.adapter.outbound.OrderDetailListDialogAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
+import kotlin.getValue
 
 class OrderDetailListDialog : BaseDialogFragment() {
 
-    override val viewModel by viewModel<OrderDetailListDialogVM>()
+    private val safeArgs by navArgs<OrderDetailListDialogArgs>()
+
+    override val viewModel by viewModel<OrderDetailListDialogVM>() {
+        parametersOf(safeArgs.orderDetailList.toList())
+    }
 
     private val binding by lazy(LazyThreadSafetyMode.NONE) {
         OrderDetailDialogListBinding.inflate(layoutInflater)
@@ -40,10 +47,8 @@ class OrderDetailListDialog : BaseDialogFragment() {
 
         dialog?.window?.setLayout(width, height)
 
-        viewModel.orderDetailList
-            .observe(viewLifecycleOwner) {
-                adapter.submitList(it)
-            }
+
+        adapter.submitList(viewModel.orderDetailList)
 
         viewModel.searchList()
             .observe(viewLifecycleOwner) {

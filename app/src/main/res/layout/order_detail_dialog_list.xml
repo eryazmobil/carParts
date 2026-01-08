@@ -12,8 +12,7 @@
 
     <eryaz.software.carParts.util.widgets.StateView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:onRetryClick="@{() -> viewModel.getOrderListDetail()}">
+        android:layout_height="match_parent">
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"

@@ -6,6 +6,7 @@ import eryaz.software.carParts.data.enums.DashboardPermissionType
 import eryaz.software.carParts.data.models.dto.CompanyDto
 import eryaz.software.carParts.data.models.dto.CountingComparisonDto
 import eryaz.software.carParts.data.models.dto.CrossDockCheckDto
+import eryaz.software.carParts.data.models.dto.OrderDetailDto
 import eryaz.software.carParts.data.models.dto.OrderHeaderDto
 import eryaz.software.carParts.data.models.dto.PackageDto
 import eryaz.software.carParts.data.models.dto.ProductDto
@@ -215,7 +216,9 @@ val appModule = module {
 
     viewModel { OrderPickingDetailVM(orderRepo = get(), workActivityRepo = get()) }
 
-    viewModel { OrderDetailListDialogVM(get()) }
+    viewModel { (orderDetailList: List<OrderDetailDto>) ->
+        OrderDetailListDialogVM(orderDetailList)
+    }
 
     viewModel { (productId: Int) ->
         ShelfListDialogVM(repo = get(), productId = productId)

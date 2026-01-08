@@ -183,7 +183,9 @@ class OrderPickingDetailFragment : BaseFragment() {
                 when (item.itemId) {
                     R.id.order_detail_list -> {
                         findNavController().navigate(
-                            OrderPickingDetailFragmentDirections.actionOrderPickingDetailFragmentToOrderDetailListDialog()
+                            OrderPickingDetailFragmentDirections.actionOrderPickingDetailFragmentToOrderDetailListDialog(
+                                viewModel.orderDetailList.toTypedArray()
+                            )
                         )
                         true
                     }

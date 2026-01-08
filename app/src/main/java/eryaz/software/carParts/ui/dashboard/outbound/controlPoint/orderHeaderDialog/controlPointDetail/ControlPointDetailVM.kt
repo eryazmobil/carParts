@@ -254,19 +254,19 @@ class ControlPointDetailVM(
     }
 
     fun findProductForControl() {
-        Log.d("TAG", "findProductForControl: ")
         viewModelScope.launch {
-            val orderDetail = orderDetailList.value.find { product ->
-                product.product.id == productID
-            }
-            Log.d("TAG", "$orderDetail")
-            if (orderDetail != null) {
-                val shipped = orderDetail.quantityShipped.toDoubleOrNull() ?: 0.0
-                val collected = orderDetail.quantityCollected.toDoubleOrNull() ?: 0.0
-                val remainingToCollect = collected - shipped
+            val remainingToCollect = orderDetailList.value
+                .filter { orderDetail ->
+                    orderDetail.product.id == productID
+                }
+                .sumOf { orderDetail ->
+                    val shipped = orderDetail.quantityShipped.toDoubleOrNull() ?: 0.0
+                    val collected = orderDetail.quantityCollected.toDoubleOrNull() ?: 0.0
+                    collected - shipped
+                }
 
-                _willControlled.emit(remainingToCollect.toString())
-            }
+            _willControlled.emit(remainingToCollect.toString())
         }
     }
+
 }

@@ -10,9 +10,9 @@ import eryaz.software.carParts.data.models.remote.response.StorageTypeResponse
 import eryaz.software.carParts.data.models.remote.response.WarehouseResponse
 
 fun CompanyResponse.toDto() = CompanyDto(
-    code = code,
-    definition = definition,
-    id = id
+    code = code.orEmpty(),
+    definition = definition.orEmpty(),
+    id = id ?: 0
 )
 
 fun WarehouseResponse.toDto() = WarehouseDto(
@@ -21,14 +21,14 @@ fun WarehouseResponse.toDto() = WarehouseDto(
     id = id
 )
 
-fun StorageTypeResponse.toDto()=StorageTypeDto(
+fun StorageTypeResponse.toDto() = StorageTypeDto(
     id = id,
     code = code,
     definition = definition
 )
 
 fun StorageResponse.toDto() = StorageDto(
-    id =  id,
+    id = id,
     code = code,
     definition = definition,
     warehouse = warehouse.toDto(),

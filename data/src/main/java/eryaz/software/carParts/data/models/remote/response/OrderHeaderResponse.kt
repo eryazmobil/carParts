@@ -6,11 +6,11 @@ data class OrderHeaderResponse(
     @SerializedName("id")
     val id: Int,
     @SerializedName("company")
-    val company: CompanyResponse,
+    val company: CompanyResponse?,
     @SerializedName("client")
     val client: ClientSmallResponse?,
     @SerializedName("warehouse")
-    val warehouse: WarehouseResponse,
+    val warehouse: WarehouseResponse?,
     @SerializedName("notes")
     val notes: String?,
     @SerializedName("shippingType")
