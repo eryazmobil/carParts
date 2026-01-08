@@ -230,8 +230,8 @@ class OrderPickingDetailVM(
 
                 showError(
                     ErrorDialogDto(
-                        title = stringProvider.invoke(eryaz.software.carParts.data.R.string.error),
-                        message = stringProvider.invoke(eryaz.software.carParts.data.R.string.msg_shelf_not_found)
+                        title = stringProvider.invoke(R.string.error),
+                        message = stringProvider.invoke(R.string.msg_shelf_not_found)
                     )
                 )
             }
@@ -354,10 +354,10 @@ class OrderPickingDetailVM(
     }
 
     private fun checkProductOrder(checkProductId: Int): Boolean {
-        orderPickingDto?.orderDetailList?.find {
+        val orderDetail = orderPickingDto?.orderDetailList?.find {
             it.quantityCollected.toDoubleOrZero() < it.quantity.toDoubleOrZero() && it.product.id == checkProductId
-        }?.let { orderDetail ->
-
+        }
+        if (orderDetail != null) {
             selectedOrderDetailProduct = orderDetail
 
             viewModelScope.launch {
@@ -382,13 +382,18 @@ class OrderPickingDetailVM(
                     }
             }
             return true
-        } ?: showError(
-            ErrorDialogDto(
-                title = stringProvider.invoke(R.string.error),
-                message = stringProvider.invoke(R.string.msg_not_in_picking_list)
+        } else {
+            viewModelScope.launch {
+                _showProductDetail.emit(false)
+            }
+            showError(
+                ErrorDialogDto(
+                    title = stringProvider.invoke(R.string.error),
+                    message = stringProvider.invoke(R.string.msg_not_in_picking_list)
+                )
             )
-        )
-        return false
+            return false
+        }
     }
 
     private fun checkProductInShelf() {

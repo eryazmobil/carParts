@@ -18,7 +18,7 @@ data class OrderHeaderResponse(
     @SerializedName("controlPoint")
     val controlPoint: ControlPointResponse?,
     @SerializedName("collectPoint")
-    val collectPoint: String,
+    val collectPoint: String?,
     @SerializedName("documentNo")
     val documentNo: String,
     @SerializedName("documentDate")
