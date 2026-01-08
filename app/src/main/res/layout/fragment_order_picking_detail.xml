@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        app:onRetryClick="@{()-> viewModel.getOrderDetailPickingList(false)}"
+        app:onRetryClick="@{()-> viewModel.getOrderDetailPickingList()}"
         app:sv_ignore_referenced_ids="toolbar"
         app:sv_viewState="@{viewModel.uiState}">
 

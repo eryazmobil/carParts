@@ -22,6 +22,8 @@ import eryaz.software.carParts.data.repositories.WorkActivityRepo
 import eryaz.software.carParts.ui.base.BaseViewModel
 import eryaz.software.carParts.util.CombinedStateFlow
 import eryaz.software.carParts.util.extensions.orZero
+import eryaz.software.carParts.util.extensions.toDoubleOrZero
+import eryaz.software.carParts.util.extensions.toIntOrZero
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -38,18 +40,23 @@ class OrderPickingDetailVM(
     val shelfAddress = MutableStateFlow("")
     private val fifoCode = MutableStateFlow(" ")
     val parentView = MutableStateFlow(false)
+    val readNewBarcode = MutableSharedFlow<Boolean>()
 
+    private var multiplier = 1
     val stockNotEnough = MutableSharedFlow<Boolean>()
     val productRequestFocus = MutableSharedFlow<Boolean>()
 
     var productId: Int = 0
+
+    private var lastIx: Int = 0
+
 
     var orderDetailList: List<OrderDetailDto> = emptyList()
 
     private var orderPickingDto: OrderPickingDto? = null
     private var selectedOrderDetailProduct: OrderDetailDto? = null
 
-    private var selectedSuggestionIndex: Int = -1
+    private var selectedSuggestionIndex: Int = 0
     private var shelfId: Int = 0
 
     private val _selectedSuggestion = MutableStateFlow<PickingSuggestionDto?>(null)
@@ -105,7 +112,7 @@ class OrderPickingDetailVM(
         getOrderDetailPickingList()
     }
 
-    fun getOrderDetailPickingList(forRefresh: Boolean = false) = executeInBackground(_uiState) {
+    fun getOrderDetailPickingList() = executeInBackground(_uiState) {
         orderRepo.getOrderDetailPickingList(
             workActivityId = TemporaryCashManager.getInstance().workActivity?.workActivityId.orZero(),
             userId = SessionManager.userId
@@ -113,12 +120,12 @@ class OrderPickingDetailVM(
             if (it.orderDetailList.isNotEmpty()) {
 
                 orderDetailList = it.orderDetailList
-
                 if (it.pickingSuggestionList.isNotEmpty()) {
+                    readNewBarcode.emit(true)
                     orderPickingDto = it
+                    _selectedSuggestion.emit(it.pickingSuggestionList[lastIx])
+                    setSelectedSuggestion()
 
-                    if (!forRefresh)
-                        showNext()
                 } else {
                     checkAllOrderCompleted(it.orderDetailList)
                 }
@@ -136,6 +143,25 @@ class OrderPickingDetailVM(
                     titleRes = R.string.error, message = message
                 )
             )
+        }
+    }
+
+    private fun setSelectedSuggestion() {
+
+        viewModelScope.launch {
+            val orderDetail = orderPickingDto?.orderDetailList?.find {
+                selectedSuggestion.value?.id == it.id
+            }
+
+            productId = _selectedSuggestion.value?.product?.id ?: 0
+
+            val remainingQty =
+                orderDetail?.quantity.toIntOrZero() - orderDetail?.quantityCollected.toIntOrZero()
+            _orderQuantityTxt.emit(
+                "0 / $remainingQty"
+            )
+
+            _pageNum.emit("${selectedSuggestionIndex + 1} / ${orderPickingDto?.pickingSuggestionList?.size}")
         }
     }
 
@@ -160,15 +186,18 @@ class OrderPickingDetailVM(
     }
 
     fun getBarcodeByCode() {
-        executeInBackground(showProgressDialog = true) {
+        executeInBackground(
+            showProgressDialog = true
+        ) {
             workActivityRepo.getBarcodeByCode(
                 code = productBarcode.value, companyId = SessionManager.companyId
             ).onSuccess {
-                productId = it.product.id
-                _productQuantity.emit("x " + it.quantity.toString())
-                _productDetail.emit(it.product)
-
-                checkProductOrder()
+                if (checkProductOrder(it.product.id)) {
+                    productId = it.product.id
+                    _productQuantity.emit("x " + it.quantity.toString())
+                    multiplier = it.quantity
+                    _productDetail.emit(it.product)
+                }
             }.onError { _, _ ->
                 productBarcode.emit("")
                 _showProductDetail.emit(false)
@@ -184,7 +213,9 @@ class OrderPickingDetailVM(
 
     fun getShelfByCode() {
         executeInBackground(
-            showErrorDialog = true, showProgressDialog = true, hasNextRequest = true
+            showErrorDialog = true,
+            showProgressDialog = true,
+            hasNextRequest = true
         ) {
             workActivityRepo.getShelfByCode(
                 code = shelfAddress.value.trim(),
@@ -224,7 +255,7 @@ class OrderPickingDetailVM(
 
     fun updateOrderDetailCollectedAddQuantityForPda() {
         executeInBackground(showProgressDialog = true) {
-            val quantity = enteredQuantity.value.toInt()
+            val quantity = enteredQuantity.value.toIntOrZero() * multiplier
 
             orderRepo.updateOrderDetailCollectedAddQuantityForPda(
                 workActionId = TemporaryCashManager.getInstance().workAction?.workActionId.orZero(),
@@ -235,12 +266,11 @@ class OrderPickingDetailVM(
                 orderDetailId = selectedOrderDetailProduct?.id.orZero(),
                 fifoCode = fifoCode.value
             ).onSuccess {
-                updateOrderQuantity()
+                getOrderDetailPickingList()
                 checkPickingFromOrder()
 
                 enteredQuantity.value = ""
                 shelfAddress.value = ""
-
 
                 _showProductDetail.emit(false)
                 productRequestFocus.emit(true)
@@ -312,72 +342,6 @@ class OrderPickingDetailVM(
         }
     }
 
-    private fun updateOrderQuantity() {
-        var quantity = enteredQuantity.value.toInt()
-
-        selectedOrderDetailProduct?.let {
-            if (quantity > 0) {
-                var collected = it.quantityCollected.toInt()
-                collected += quantity
-            }
-        }
-
-        if (quantity > 0) {
-            if (selectedSuggestion.value?.quantityWillBePicked?.minus(selectedSuggestion.value?.quantityPicked.orZero())
-                    .orZero() >= quantity
-            ) {
-                selectedSuggestion.value?.let {
-                    it.quantityPicked += quantity
-                }
-                quantity = 0
-            } else {
-                val otherQuantity =
-                    selectedSuggestion.value?.quantityWillBePicked?.minus(selectedSuggestion.value?.quantityPicked.orZero())
-                selectedSuggestion.value?.let {
-                    it.quantityPicked += otherQuantity.orZero()
-                }
-
-                quantity -= otherQuantity.orZero()
-            }
-        }
-
-        selectedSuggestion.value?.let { dto ->
-            if (dto.quantityWillBePicked.orZero() == dto.quantityPicked.orZero()) {
-                orderPickingDto?.pickingSuggestionList?.toMutableList()?.apply {
-                    indexOfFirst {
-                        it.quantityWillBePicked.orZero() == it.quantityPicked.orZero()
-                    }.let { index ->
-
-                        val deletedOrderDetailListIx =
-                            orderPickingDto?.orderDetailList?.indexOfFirst {
-                                it.id == orderPickingDto?.pickingSuggestionList?.get(index)?.id
-                            } ?: -1
-
-                        if (index != -1 && deletedOrderDetailListIx != -1) {
-                            removeAt(index)
-
-                            orderPickingDto?.orderDetailList?.toMutableList()?.apply {
-                                removeAt(deletedOrderDetailListIx)
-                                orderPickingDto?.orderDetailList = this
-                            }
-
-                            orderPickingDto?.pickingSuggestionList = this
-                            selectedSuggestionIndex = index - 1
-
-                            showNext()
-                        }
-                    }
-
-                    if (isEmpty()) {
-                        viewModelScope.launch {
-                            parentView.emit(true)
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     private fun checkPickingFromOrder() {
         val isQuantityCollectedLess = orderPickingDto?.orderDetailList?.any {
 
@@ -389,10 +353,11 @@ class OrderPickingDetailVM(
         }
     }
 
-    private fun checkProductOrder() {
+    private fun checkProductOrder(checkProductId: Int): Boolean {
         orderPickingDto?.orderDetailList?.find {
-            it.quantityCollected.toInt() < it.quantity.toInt() && it.product.id == productId
+            it.quantityCollected.toDoubleOrZero() < it.quantity.toDoubleOrZero() && it.product.id == checkProductId
         }?.let { orderDetail ->
+
             selectedOrderDetailProduct = orderDetail
 
             viewModelScope.launch {
@@ -402,25 +367,28 @@ class OrderPickingDetailVM(
 
                 orderPickingDto?.pickingSuggestionList?.indexOfFirst { it.product.id == orderDetail.product.id }
                     ?.let { index ->
-                        if (index != -1) {
-                            selectedSuggestionIndex = index - 1
-                            _pickedAndOrderQty.emit(
-                                "${orderPickingDto?.pickingSuggestionList?.get(index)?.quantityPicked} / ${
-                                    orderPickingDto?.pickingSuggestionList?.get(
-                                        index
-                                    )?.quantityWillBePicked
-                                }"
-                            )
-                        }
+                        lastIx =
+                            if ((index == (orderPickingDto?.pickingSuggestionList?.size?.minus(1)
+                                    ?: 0) && index != 0)
+                            ) {
+                                index - 1
+                            } else {
+                                index
+                            }
+                        selectedSuggestionIndex = index - 1
+                        _pickedAndOrderQty.emit("${orderDetail.quantityCollected} / ${orderDetail.quantity}")
+
                         showNext()
                     }
             }
+            return true
         } ?: showError(
             ErrorDialogDto(
-                title = stringProvider.invoke(eryaz.software.carParts.data.R.string.error),
+                title = stringProvider.invoke(R.string.error),
                 message = stringProvider.invoke(R.string.msg_not_in_picking_list)
             )
         )
+        return false
     }
 
     private fun checkProductInShelf() {
@@ -447,14 +415,7 @@ class OrderPickingDetailVM(
                 _selectedSuggestion.emit(it)
 
                 productId = it.product.id
-            } ?: run {
-                selectedSuggestionIndex--
-                orderPickingDto?.pickingSuggestionList?.getOrNull(selectedSuggestionIndex)?.let {
-                    _selectedSuggestion.emit(it)
-
-                    productId = it.product.id
-                }
-            }
+            } ?: run { selectedSuggestionIndex-- }
 
             _orderQuantityTxt.emit(
                 "${orderPickingDto?.pickingSuggestionList?.getOrNull(selectedSuggestionIndex)?.quantityPicked} / " +
@@ -503,13 +464,13 @@ class OrderPickingDetailVM(
     }
 
     fun setEnteredProduct(dto: ProductDto) {
-        productId = dto.id
+        if (checkProductOrder(dto.id)) {
+            productId = dto.id
 
-        viewModelScope.launch {
-            _productDetail.emit(dto)
-            _productQuantity.emit("x " + 1)
-            _showProductDetail.emit(false)
-            checkProductOrder()
+            viewModelScope.launch {
+                _productDetail.emit(dto)
+                _productQuantity.emit("x " + 1)
+            }
         }
     }
 }

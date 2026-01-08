@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.widget.PopupMenu
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.asLiveData
@@ -17,9 +16,9 @@ import eryaz.software.carParts.databinding.FragmentOrderPickingDetailBinding
 import eryaz.software.carParts.ui.base.BaseFragment
 import eryaz.software.carParts.ui.dashboard.recording.dialog.ProductListDialogFragment
 import eryaz.software.carParts.util.bindingAdapter.setOnSingleClickListener
-import eryaz.software.carParts.util.extensions.hideSoftKeyboard
 import eryaz.software.carParts.util.extensions.observe
 import eryaz.software.carParts.util.extensions.onBackPressedCallback
+import eryaz.software.carParts.util.extensions.onBarcodeOrShelfReadListener
 import eryaz.software.carParts.util.extensions.parcelable
 import eryaz.software.carParts.util.extensions.toast
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -81,7 +80,7 @@ class OrderPickingDetailFragment : BaseFragment() {
             }
         }
 
-        viewModel.productRequestFocus.asLiveData().observe(this) {
+        viewModel.readNewBarcode.asLiveData().observe(viewLifecycleOwner) {
             if (it)
                 binding.searchProductEdt.requestFocus()
         }
@@ -132,28 +131,14 @@ class OrderPickingDetailFragment : BaseFragment() {
             }
         }
 
-        binding.searchProductEdt.setOnEditorActionListener { _, actionId, _ ->
+        binding.searchProductEdt.onBarcodeOrShelfReadListener {
+            viewModel.getBarcodeByCode()
 
-            val isValidBarcode = viewModel.productBarcode.value.trim().isNotEmpty()
-
-            if ((actionId == EditorInfo.IME_ACTION_UNSPECIFIED || actionId == EditorInfo.IME_ACTION_DONE) && isValidBarcode) {
-                viewModel.getBarcodeByCode()
-            }
-
-            hideSoftKeyboard()
-            true
         }
 
-        binding.shelfAddressEdt.setOnEditorActionListener { _, actionId, _ ->
+        binding.shelfAddressEdt.onBarcodeOrShelfReadListener {
+            viewModel.getShelfByCode()
 
-            val shelfAddress = viewModel.shelfAddress.value.trim().isNotEmpty()
-
-            if ((actionId == EditorInfo.IME_ACTION_UNSPECIFIED || actionId == EditorInfo.IME_ACTION_DONE) && shelfAddress) {
-                viewModel.getShelfByCode()
-            }
-
-            hideSoftKeyboard()
-            true
         }
 
         viewModel.nextOrder.observe(this) {
@@ -205,10 +190,5 @@ class OrderPickingDetailFragment : BaseFragment() {
             }
             show()
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        binding.searchProductEdt.requestFocus()
     }
 }
