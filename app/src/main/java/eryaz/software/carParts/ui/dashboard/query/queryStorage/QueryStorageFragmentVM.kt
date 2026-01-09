@@ -105,13 +105,19 @@ class QueryStorageFragmentVM(
     fun setExitStorage(it: ProductDto) {
         viewModelScope.launch {
             _productDetail.emit(it)
+            productId = it.id
         }
         getProductStorageQuantityList(it.id)
         getProductShelfQuantityList(it.id)
+        getProductControlPoint()
+        getPackageDetailListByProductId(it.id)
     }
 
     fun getProductControlPoint() {
-        executeInBackground(showProgressDialog = true) {
+        executeInBackground(
+            showProgressDialog = true,
+            showErrorDialog = false
+        ) {
             repo.getControlPointForProductByQuantity(
                 companyId = SessionManager.companyId,
                 warehouseId = SessionManager.warehouseId,
