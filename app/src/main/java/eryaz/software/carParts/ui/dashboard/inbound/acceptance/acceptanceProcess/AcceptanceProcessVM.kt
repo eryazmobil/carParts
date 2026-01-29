@@ -76,8 +76,7 @@ class AcceptanceProcessVM(
                 TemporaryCashManager.getInstance().workActivity?.workActivityId ?: 0
             repo.getWaybillListDetail(
                 workActivityId = workActivityID
-            )
-                .onSuccess {
+            ).onSuccess {
                     waybillDetailList = it
                     checkIfAllFinished()
                 }
@@ -112,7 +111,6 @@ class AcceptanceProcessVM(
     }
 
     fun getBarcodeByCode() {
-
         if (isFetchingBarcode) return
 
         val query = searchProduct.value.trim()
@@ -127,6 +125,8 @@ class AcceptanceProcessVM(
                 SessionManager.companyId
             ).onSuccess {
                 productID = it.product.id
+                isProductValid()
+
                 searchProduct.emit("")
                 if (serialCheck.value) {
                     updateWaybillControlAddQuantity(SERIAL_WORK)
@@ -135,7 +135,6 @@ class AcceptanceProcessVM(
                     _hasSerial.emit(it.product.hasSerial)
                     multiplier.emit("× " + it.quantity.toString())
                 }
-                isProductValid()
             }.onError { _, _ ->
                 showCreateBarcode.value = true
                 searchProduct.emit("")
