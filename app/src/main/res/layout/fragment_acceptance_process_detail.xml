@@ -14,7 +14,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        app:sv_ignore_referenced_ids="toolbar">
+        app:onRetryClick="@{()->  viewModel.getWaybillListDetail()}"
+        app:sv_ignore_referenced_ids="toolbar"
+        app:sv_viewState="@{viewModel.uiState}">
 
         <eryaz.software.carParts.util.widgets.Toolbar
             android:id="@+id/toolbar"

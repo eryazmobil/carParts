@@ -59,7 +59,6 @@ class AcceptanceProcessVM(
 
     init {
         TemporaryCashManager.getInstance().workActivity?.let {
-
             viewModelScope.launch {
                 _clientName.emit(it.client!!.name)
                 _orderDate.emit(it.creationTime)
@@ -70,44 +69,16 @@ class AcceptanceProcessVM(
         getWaybillListDetail()
     }
 
-    private fun getWaybillListDetail() {
-        executeInBackground(_uiState) {
-            val workActivityID =
-                TemporaryCashManager.getInstance().workActivity?.workActivityId ?: 0
-            repo.getWaybillListDetail(
-                workActivityId = workActivityID
-            ).onSuccess {
+    fun getWaybillListDetail() = executeInBackground(_uiState) {
+            repo.getWaybillListDetail(workActivityId = TemporaryCashManager.getInstance().workActivity?.workActivityId ?: 0)
+                .onSuccess {
                     waybillDetailList = it
                     checkIfAllFinished()
                 }
         }
-    }
 
     fun isQuantityValid(): Boolean {
         return quantity.value.isEmpty() || quantity.value == "0"
-    }
-
-    private fun isProductValid() {
-        waybillDetailList.any {
-            it.product.id == productID
-        }.let { hasProduct ->
-            if (hasProduct) {
-                viewModelScope.launch {
-                    if (!serialCheck.value)
-                        _showProductDetailView.emit(true)
-                }
-            } else {
-                viewModelScope.launch {
-                    _showProductDetailView.emit(false)
-                }
-                showError(
-                    ErrorDialogDto(
-                        title = stringProvider.invoke(eryaz.software.carParts.data.R.string.error),
-                        message = stringProvider.invoke(eryaz.software.carParts.data.R.string.no_exist_in_waybill)
-                    )
-                )
-            }
-        }
     }
 
     fun getBarcodeByCode() {
@@ -140,6 +111,29 @@ class AcceptanceProcessVM(
                 searchProduct.emit("")
             }.apply {
                 isFetchingBarcode = false
+            }
+        }
+    }
+
+    private fun isProductValid() {
+        waybillDetailList.any {
+            it.product.id == productID
+        }.let { hasProduct ->
+            if (hasProduct) {
+                viewModelScope.launch {
+                    if (!serialCheck.value)
+                        _showProductDetailView.emit(true)
+                }
+            } else {
+                viewModelScope.launch {
+                    _showProductDetailView.emit(false)
+                }
+                showError(
+                    ErrorDialogDto(
+                        title = stringProvider.invoke(eryaz.software.carParts.data.R.string.error),
+                        message = stringProvider.invoke(eryaz.software.carParts.data.R.string.no_exist_in_waybill)
+                    )
+                )
             }
         }
     }
