@@ -101,16 +101,6 @@ class TransferStorageVM(
                 return false
             }
 
-            exitShelfId.value == 0 -> {
-                showError(
-                    ErrorDialogDto(
-                        titleRes = R.string.error,
-                        messageRes = R.string.exit_shelf_address
-                    )
-                )
-                return false
-            }
-
             enterShelfEId == 0 -> {
                 showError(
                     ErrorDialogDto(
