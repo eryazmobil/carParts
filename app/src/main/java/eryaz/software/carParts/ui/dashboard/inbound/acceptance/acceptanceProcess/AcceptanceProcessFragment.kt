@@ -1,5 +1,6 @@
 package eryaz.software.carParts.ui.dashboard.inbound.acceptance.acceptanceProcess
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,8 +24,10 @@ import eryaz.software.carParts.ui.base.BaseFragment
 import eryaz.software.carParts.ui.dashboard.recording.dialog.ProductListDialogFragment
 import eryaz.software.carParts.util.bindingAdapter.setOnSingleClickListener
 import eryaz.software.carParts.util.dialogs.QuestionDialog
+import eryaz.software.carParts.util.extensions.handleProgress
 import eryaz.software.carParts.util.extensions.hideSoftKeyboard
 import eryaz.software.carParts.util.extensions.onBackPressedCallback
+import eryaz.software.carParts.util.extensions.onBarcodeOrShelfReadListener
 import eryaz.software.carParts.util.extensions.parcelable
 import eryaz.software.carParts.util.extensions.toIntOrZero
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -61,6 +64,10 @@ class AcceptanceProcessFragment : BaseFragment() {
             .observe(viewLifecycleOwner) {
                 binding.quantityEdt.requestFocus()
             }
+
+        viewModel.uiState.asLiveData().observe(viewLifecycleOwner) { data ->
+            binding.controlBtn.handleProgress(data, progressColor = Color.WHITE)
+        }
 
         viewModel.controlSuccess
             .asLiveData()
@@ -135,16 +142,8 @@ class AcceptanceProcessFragment : BaseFragment() {
             )
         }
 
-        binding.searchEdt.setOnEditorActionListener { _, actionId, _ ->
-
-            val isValidBarcode = viewModel.searchProduct.value.trim().isNotEmpty()
-
-            if ((actionId == EditorInfo.IME_ACTION_UNSPECIFIED || actionId == EditorInfo.IME_ACTION_DONE) && isValidBarcode) {
-                viewModel.getBarcodeByCode()
-            }
-
-            hideSoftKeyboard()
-            true
+        binding.searchEdt.onBarcodeOrShelfReadListener {
+            viewModel.getBarcodeByCode()
         }
 
         binding.controlBtn.setOnSingleClickListener {

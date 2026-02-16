@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="eryaz.software.carParts.data.enums.UiState" />
 
         <variable
             name="viewModel"
@@ -206,6 +207,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="16dp"
                         android:layout_marginTop="24dp"
+                        app:enabled="@{viewModel.uiState != UiState.LOADING}"
                         android:layout_marginBottom="@dimen/_10sdp"
                         android:text="@string/control"
                         android:textSize="20sp"

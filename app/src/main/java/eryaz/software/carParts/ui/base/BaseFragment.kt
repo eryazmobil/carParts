@@ -8,8 +8,12 @@ import android.view.View
 import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.NavHostFragment
 import eryaz.software.carParts.R
+import eryaz.software.carParts.core.ConnectivityObserver
+import eryaz.software.carParts.core.NetworkConnectivityObserver
 import eryaz.software.carParts.data.enums.SoundEnum
 import eryaz.software.carParts.data.models.dto.ConfirmationDialogDto
 import eryaz.software.carParts.util.StatusBarUtil.changeStatusBarMode
@@ -24,12 +28,18 @@ import eryaz.software.carParts.util.extensions.getColorCompat
 import eryaz.software.carParts.util.extensions.getColorInt
 import eryaz.software.carParts.util.extensions.observe
 import eryaz.software.carParts.util.extensions.supportActionBar
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.launch
 
 open class BaseFragment : Fragment() {
     private val _progressDialog = ProgressDialog(lifecycle)
     private val _errorDialog = ErrorDialog(lifecycle)
     private val _warningDialog = WarningDialog(lifecycle)
     private val _confirmationDialog = ConfirmationDialog(lifecycle)
+
+    private lateinit var connectivityObserver: ConnectivityObserver
+
 
     private val progressDialog by lazy(LazyThreadSafetyMode.NONE) {
         return@lazy _progressDialog.createDialog(
@@ -79,6 +89,19 @@ open class BaseFragment : Fragment() {
 
         viewModel?.stringProvider = {
             context?.getString(it).orEmpty()
+        }
+
+        connectivityObserver = NetworkConnectivityObserver(requireContext().applicationContext)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                connectivityObserver.observe().onStart {
+                    emit(connectivityObserver.currentStatus())
+                }.distinctUntilChanged()
+                    .collect { connectionStatus ->
+                        viewModel?.onConnectionStatusChanged(connectionStatus)
+                    }
+            }
         }
 
         setClicks()

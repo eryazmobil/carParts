@@ -83,7 +83,17 @@ class ControlPointDetailFragment : BaseFragment() {
                     position: Int,
                     id: Long
                 ) {
-                    viewModel.setSelectedPackagePosition(position)
+                    if (position != 0) {
+                        binding.packageSpinner.setSelection(position)
+                        viewModel.setSelectedPackagePosition(position)
+                    } else {
+                        binding.packageSpinner.setSelection(
+                            viewModel.packageList.value.indexOf(
+                                viewModel.selectedPackageDto
+                            )
+                        )
+                    }
+
                 }
 
                 override fun onNothingSelected(parentView: AdapterView<*>?) {
@@ -131,7 +141,7 @@ class ControlPointDetailFragment : BaseFragment() {
             }
         }
 
-        viewModel.showProductDetail.asLiveData().observe(this){
+        viewModel.successBarcode.asLiveData().observe(this) {
             if (it)
                 binding.quantityEdt.requestFocus()
         }
@@ -146,7 +156,7 @@ class ControlPointDetailFragment : BaseFragment() {
                 binding.quantityEdt.hideSoftKeyboard()
         }
 
-        viewModel.controlSuccess.asLiveData().observe(this){
+        viewModel.controlSuccess.asLiveData().observe(this) {
             if (it)
                 binding.searchEdt.requestFocus()
 

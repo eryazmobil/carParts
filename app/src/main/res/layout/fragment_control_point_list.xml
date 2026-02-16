@@ -33,6 +33,32 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
+            <eryaz.software.carParts.util.widgets.TextInputLayout
+                android:id="@+id/searchbar"
+                style="@style/Widget.Zeus.SearchInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:elevation="10dp"
+                android:hint="@string/make_search"
+                app:endIconDrawable="@drawable/ic_blue_search"
+                app:endIconTint="@null"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/search_txt"
+                    style="@style/Widget.Zeus.SearchInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    android:text="@={viewModel.search}"
+                    android:textColorHint="@color/logoGray"
+                    android:textSize="18sp"
+                    app:fontFamily="@font/sogeoui" />
+            </eryaz.software.carParts.util.widgets.TextInputLayout>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
@@ -45,7 +71,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/searchbar"
                 tools:itemCount="6"
                 tools:listitem="@layout/item_work_activity_list" />
 

@@ -53,14 +53,6 @@ class ErrorDialog(lifecycle: Lifecycle) : LifecycleEventObserver {
 
     fun show(context: Context?, model: ErrorDialogDto?) {
         model?.let {
-            if (!context.isNetworkAvailable()) {
-                model.messageRes =
-                    R.string.in_error_dialog_no_internet_connection
-
-                if (!model.showNoInternetDialog)
-                    return
-            }
-
             if (model.titleRes > 0)
                 model.title = context?.getString(model.titleRes)
 

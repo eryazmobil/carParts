@@ -1,6 +1,7 @@
 package eryaz.software.carParts.ui.dashboard.outbound.controlPoint
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.switchMap
 import eryaz.software.carParts.R
 import eryaz.software.carParts.data.api.utils.onError
 import eryaz.software.carParts.data.api.utils.onSuccess
@@ -8,12 +9,15 @@ import eryaz.software.carParts.data.models.dto.ControlPointScreenDto
 import eryaz.software.carParts.data.models.dto.ErrorDialogDto
 import eryaz.software.carParts.data.models.dto.OrderHeaderDto
 import eryaz.software.carParts.data.models.dto.WarningDialogDto
+import eryaz.software.carParts.data.models.dto.WorkActivityDto
 import eryaz.software.carParts.data.persistence.SessionManager
 import eryaz.software.carParts.data.repositories.OrderRepo
 import eryaz.software.carParts.ui.base.BaseViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlin.collections.filter
+import kotlin.collections.orEmpty
 
 class ControlPointListVM(private val repo: OrderRepo) : BaseViewModel() {
 
@@ -28,6 +32,22 @@ class ControlPointListVM(private val repo: OrderRepo) : BaseViewModel() {
 
     private val _orderHeaderList = MutableSharedFlow<List<OrderHeaderDto>>()
     val orderHeaderList = _orderHeaderList.asSharedFlow()
+
+
+    fun searchList() = search.switchMap { query ->
+        MutableLiveData<List<ControlPointScreenDto?>>().apply {
+            value = filterData(query)
+        }
+    }
+
+    private fun filterData(query: String): List<ControlPointScreenDto?> {
+        val dataList = _controlPointList.value
+
+        val filteredList = dataList.filter { data ->
+            data.clientNames.contains(query, ignoreCase = true)
+        }
+        return filteredList
+    }
 
     fun fetchControlPointList() {
         executeInBackground(_uiState) {

@@ -61,6 +61,9 @@ class ControlPointDetailVM(
     private val _productCode = MutableStateFlow("")
     val productCode = _productCode.asStateFlow()
 
+    private val _successBarcode = MutableSharedFlow<Boolean>()
+    val successBarcode = _successBarcode.asSharedFlow()
+
     private val _willControlled = MutableStateFlow("")
     val willControlled = _willControlled.asStateFlow()
 
@@ -183,18 +186,6 @@ class ControlPointDetailVM(
         }
     }
 
-    fun fake() {
-        viewModelScope.launch {
-            searchProduct.emit("")
-            quantity.emit("")
-
-            _showProductDetail.emit(false)
-            _showProductControl.emit(false)
-            getOrderListDetail()
-        }
-
-    }
-
     fun getPackageList() {
         executeInBackground {
             orderRepo.getPackageList(orderHeaderId = orderHeaderId).onSuccess {
@@ -255,6 +246,7 @@ class ControlPointDetailVM(
 
     fun findProductForControl() {
         viewModelScope.launch {
+            _successBarcode.emit(true)
             val remainingToCollect = orderDetailList.value
                 .filter { orderDetail ->
                     orderDetail.product.id == productID

@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import eryaz.software.carParts.R
 import eryaz.software.carParts.data.api.utils.onError
 import eryaz.software.carParts.data.api.utils.onSuccess
+import eryaz.software.carParts.data.enums.UiState
 import eryaz.software.carParts.data.models.dto.ButtonDto
 import eryaz.software.carParts.data.models.dto.ErrorDialogDto
 import eryaz.software.carParts.data.models.dto.ProductDto
@@ -58,6 +59,9 @@ class AcceptanceProcessVM(
     private var isFetchingBarcode = false
 
     init {
+
+        _uiState.value = UiState.EMPTY
+
         TemporaryCashManager.getInstance().workActivity?.let {
 
             viewModelScope.launch {
@@ -88,9 +92,9 @@ class AcceptanceProcessVM(
         return quantity.value.isEmpty() || quantity.value == "0"
     }
 
-    private fun isProductValid() {
+    private fun isProductValid(productId: Int) {
         waybillDetailList.any {
-            it.product.id == productID
+            it.product.id == productId
         }.let { hasProduct ->
             if (hasProduct) {
                 viewModelScope.launch {
@@ -135,7 +139,7 @@ class AcceptanceProcessVM(
                     _hasSerial.emit(it.product.hasSerial)
                     multiplier.emit("× " + it.quantity.toString())
                 }
-                isProductValid()
+                isProductValid(it.product.id)
             }.onError { _, _ ->
                 showCreateBarcode.value = true
                 searchProduct.emit("")
@@ -153,7 +157,11 @@ class AcceptanceProcessVM(
 
     fun updateWaybillControlAddQuantity(quantity: Int) {
         TemporaryCashManager.getInstance().workAction?.let {
-            executeInBackground(showErrorDialog = false, hasNextRequest = true) {
+            executeInBackground(
+                uiState = _uiState,
+                showErrorDialog = false,
+                hasNextRequest = true
+            ) {
                 repo.updateWaybillControlAddQuantity(
                     actionId = it.workActionId,
                     productId = productID,
@@ -222,7 +230,7 @@ class AcceptanceProcessVM(
         viewModelScope.launch {
             searchProduct.emit("")
             _productDetail.emit(dto)
-            isProductValid()
+            isProductValid(dto.id)
         }
     }
 }

@@ -2,6 +2,8 @@ package eryaz.software.carParts.ui.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import eryaz.software.carParts.R
+import eryaz.software.carParts.core.ConnectivityObserver
 import eryaz.software.carParts.data.api.utils.Resource
 import eryaz.software.carParts.data.api.utils.asErrorDialogDto
 import eryaz.software.carParts.data.api.utils.asUiState
@@ -24,6 +26,8 @@ open class BaseViewModel : ViewModel() {
     private val _showWarningDialog = MutableStateFlow<WarningDialogDto?>(null)
     val showWarningDialog = _showWarningDialog.asStateFlow()
 
+    private val _connectionStatus = MutableStateFlow(ConnectivityObserver.Status.Available)
+    val connectionStatus = _connectionStatus.asStateFlow()
     private val _showConfirmationDialog = MutableStateFlow<ConfirmationDialogDto?>(null)
     val showConfirmationDialog = _showConfirmationDialog.asStateFlow()
 
@@ -41,28 +45,41 @@ open class BaseViewModel : ViewModel() {
         showProgressDialog: Boolean = false,
         func: suspend () -> Resource<T>
     ) {
-        if (uiState.value != UiState.LOADING)
-            uiState.value = UiState.LOADING
-
-        if (showProgressDialog)
-            _showProgressDialog.value = uiState.value
-
-        viewModelScope.launch {
-            val response = func()
-            val newState = response.asUiState(checkEmptyList)
-
-            if (showErrorDialog && newState == UiState.ERROR)
-                showError(response.asErrorDialogDto())
-
-            if (hasNextRequest && newState == UiState.SUCCESS)
-                return@launch
-
-            if (checkErrorState || newState != UiState.ERROR)
-                uiState.value = newState
+        if (_connectionStatus.value == ConnectivityObserver.Status.Available) {
+            if (uiState.value != UiState.LOADING)
+                uiState.value = UiState.LOADING
 
             if (showProgressDialog)
                 _showProgressDialog.value = uiState.value
+
+            viewModelScope.launch {
+                val response = func()
+                val newState = response.asUiState(checkEmptyList)
+
+                if (showErrorDialog && newState == UiState.ERROR)
+                    showError(response.asErrorDialogDto())
+
+                if (hasNextRequest && newState == UiState.SUCCESS)
+                    return@launch
+
+                if (checkErrorState || newState != UiState.ERROR)
+                    uiState.value = newState
+
+                if (showProgressDialog)
+                    _showProgressDialog.value = uiState.value
+            }
+        } else {
+            showError(
+                ErrorDialogDto(
+                    title = stringProvider.invoke(R.string.error),
+                    message = stringProvider.invoke(R.string.check_internet_connection)
+                )
+            )
         }
+    }
+
+    fun onConnectionStatusChanged(status: ConnectivityObserver.Status) {
+        _connectionStatus.value = status
     }
 
     fun showError(model: ErrorDialogDto?) {

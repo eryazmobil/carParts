@@ -69,12 +69,14 @@
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/packageSpinner"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="50dp"
                     android:layout_marginHorizontal="8dp"
                     android:layout_marginVertical="12dp"
                     android:gravity="center"
                     android:padding="8dp"
                     app:isVisibleElseGone="@{viewModel.showSpinnerList}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/searchProductTill" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -207,7 +209,8 @@
                             style="@style/Widget.Zeus.SearchInput"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="text"
+                            android:inputType="numberDecimal"
+                            android:imeOptions="actionDone"
                             android:text="@={viewModel.quantity}"
                             android:textColorHint="@color/logoGray"
                             android:textSize="18sp"

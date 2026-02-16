@@ -40,6 +40,11 @@ class ControlPointListFragment : BaseFragment() {
             .observe(viewLifecycleOwner) {
                 adapter.submitList(it)
             }
+
+        viewModel.searchList()
+            .observe(viewLifecycleOwner) {
+                adapter.submitList(it)
+            }
         
         viewModel.orderHeaderList
             .asLiveData()
