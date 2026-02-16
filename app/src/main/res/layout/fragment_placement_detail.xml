@@ -171,45 +171,6 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
                     </androidx.cardview.widget.CardView>
 
-                    <eryaz.software.carParts.util.widgets.TextInputLayout
-                        android:id="@+id/shelfAddress"
-                        style="@style/Widget.Zeus.SearchInput"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="16dp"
-                        android:layout_marginTop="12dp"
-                        android:elevation="10dp"
-                        android:hint="@string/shelf_code"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/editQuantityView">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/shelfAddressEdt"
-                            style="@style/Widget.Zeus.SearchInput"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:imeOptions="actionDone"
-                            android:inputType="text"
-                            android:text="@={placementViewModel.searchShelf}"
-                            android:textColorHint="@color/logoGray"
-                            android:textSize="18sp"
-                            app:fontFamily="@font/sogeoui" />
-                    </eryaz.software.carParts.util.widgets.TextInputLayout>
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/suggestionShelfRecycleView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="16dp"
-                        android:layout_marginTop="15dp"
-                        android:layout_weight="2"
-                        app:itemDecoration="@{5}"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:layout_constraintBottom_toTopOf="@id/noteTill"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/shelfAddress"
-                        tools:itemCount="2" />
 
                     <eryaz.software.carParts.util.widgets.TextInputLayout
                         android:id="@+id/noteTill"
@@ -221,7 +182,7 @@
                         android:elevation="10dp"
                         android:hint="Menşei"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/suggestionShelfRecycleView">
+                        app:layout_constraintTop_toBottomOf="@+id/editQuantityView">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/noteEdt"
@@ -236,6 +197,46 @@
                             app:fontFamily="@font/sogeoui" />
                     </eryaz.software.carParts.util.widgets.TextInputLayout>
 
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/suggestionShelfRecycleView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_weight="2"
+                        app:itemDecoration="@{5}"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/noteTill"
+                        tools:itemCount="2" />
+
+                    <eryaz.software.carParts.util.widgets.TextInputLayout
+                        android:id="@+id/shelfAddress"
+                        style="@style/Widget.Zeus.SearchInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="16dp"
+                        android:elevation="10dp"
+                        android:hint="@string/shelf_code"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/suggestionShelfRecycleView">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/shelfAddressEdt"
+                            style="@style/Widget.Zeus.SearchInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:imeOptions="actionDone"
+                            android:inputType="text"
+                            android:text="@={placementViewModel.searchShelf}"
+                            android:textColorHint="@color/logoGray"
+                            android:textSize="18sp"
+                            app:fontFamily="@font/sogeoui" />
+                    </eryaz.software.carParts.util.widgets.TextInputLayout>
+
+
+
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/controlBtn"
                         style="@style/Widget.NewZeusDemo.Button_2"
@@ -248,7 +249,7 @@
                         android:textSize="20sp"
                         app:fontFamily="@font/sogeoui"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/noteTill"
+                        app:layout_constraintTop_toBottomOf="@+id/shelfAddress"
                         app:layout_goneMarginTop="@dimen/_10sdp" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
