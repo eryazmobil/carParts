@@ -4,7 +4,6 @@ import androidx.lifecycle.viewModelScope
 import eryaz.software.carParts.R
 import eryaz.software.carParts.data.api.utils.onError
 import eryaz.software.carParts.data.api.utils.onSuccess
-import eryaz.software.carParts.data.enums.UiState
 import eryaz.software.carParts.data.models.dto.ButtonDto
 import eryaz.software.carParts.data.models.dto.ErrorDialogDto
 import eryaz.software.carParts.data.models.dto.ProductDto
@@ -59,11 +58,7 @@ class AcceptanceProcessVM(
     private var isFetchingBarcode = false
 
     init {
-
-        _uiState.value = UiState.EMPTY
-
         TemporaryCashManager.getInstance().workActivity?.let {
-
             viewModelScope.launch {
                 _clientName.emit(it.client!!.name)
                 _orderDate.emit(it.creationTime)
@@ -74,27 +69,55 @@ class AcceptanceProcessVM(
         getWaybillListDetail()
     }
 
-    private fun getWaybillListDetail() {
-        executeInBackground(_uiState) {
-            val workActivityID =
-                TemporaryCashManager.getInstance().workActivity?.workActivityId ?: 0
-            repo.getWaybillListDetail(
-                workActivityId = workActivityID
-            )
+    fun getWaybillListDetail() = executeInBackground(_uiState) {
+            repo.getWaybillListDetail(workActivityId = TemporaryCashManager.getInstance().workActivity?.workActivityId ?: 0)
                 .onSuccess {
                     waybillDetailList = it
                     checkIfAllFinished()
                 }
         }
-    }
 
     fun isQuantityValid(): Boolean {
         return quantity.value.isEmpty() || quantity.value == "0"
     }
 
-    private fun isProductValid(productId: Int) {
+    fun getBarcodeByCode() {
+        if (isFetchingBarcode) return
+
+        val query = searchProduct.value.trim()
+        if (query.isEmpty()) return
+
+        executeInBackground(
+            showErrorDialog = false,
+            showProgressDialog = true
+        ) {
+            repo.getBarcodeByCode(
+                query,
+                SessionManager.companyId
+            ).onSuccess {
+                productID = it.product.id
+                isProductValid()
+
+                searchProduct.emit("")
+                if (serialCheck.value) {
+                    updateWaybillControlAddQuantity(SERIAL_WORK)
+                } else {
+                    _productDetail.emit(it.product)
+                    _hasSerial.emit(it.product.hasSerial)
+                    multiplier.emit("× " + it.quantity.toString())
+                }
+            }.onError { _, _ ->
+                showCreateBarcode.value = true
+                searchProduct.emit("")
+            }.apply {
+                isFetchingBarcode = false
+            }
+        }
+    }
+
+    private fun isProductValid() {
         waybillDetailList.any {
-            it.product.id == productId
+            it.product.id == productID
         }.let { hasProduct ->
             if (hasProduct) {
                 viewModelScope.launch {
@@ -115,40 +138,6 @@ class AcceptanceProcessVM(
         }
     }
 
-    fun getBarcodeByCode() {
-
-        if (isFetchingBarcode) return
-
-        val query = searchProduct.value.trim()
-        if (query.isEmpty()) return
-
-        executeInBackground(
-            showErrorDialog = false,
-            showProgressDialog = true
-        ) {
-            repo.getBarcodeByCode(
-                query,
-                SessionManager.companyId
-            ).onSuccess {
-                productID = it.product.id
-                searchProduct.emit("")
-                if (serialCheck.value) {
-                    updateWaybillControlAddQuantity(SERIAL_WORK)
-                } else {
-                    _productDetail.emit(it.product)
-                    _hasSerial.emit(it.product.hasSerial)
-                    multiplier.emit("× " + it.quantity.toString())
-                }
-                isProductValid(it.product.id)
-            }.onError { _, _ ->
-                showCreateBarcode.value = true
-                searchProduct.emit("")
-            }.apply {
-                isFetchingBarcode = false
-            }
-        }
-    }
-
     private suspend fun checkIfAllFinished() {
         controlSuccess.emit(waybillDetailList.all { waybillDetail ->
             waybillDetail.quantityControlled.toInt() >= waybillDetail.quantity
@@ -157,11 +146,7 @@ class AcceptanceProcessVM(
 
     fun updateWaybillControlAddQuantity(quantity: Int) {
         TemporaryCashManager.getInstance().workAction?.let {
-            executeInBackground(
-                uiState = _uiState,
-                showErrorDialog = false,
-                hasNextRequest = true
-            ) {
+            executeInBackground(showErrorDialog = false, hasNextRequest = true) {
                 repo.updateWaybillControlAddQuantity(
                     actionId = it.workActionId,
                     productId = productID,
@@ -230,7 +215,7 @@ class AcceptanceProcessVM(
         viewModelScope.launch {
             searchProduct.emit("")
             _productDetail.emit(dto)
-            isProductValid(dto.id)
+            isProductValid()
         }
     }
 }
