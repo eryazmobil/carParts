@@ -73,8 +73,8 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/endIconBtn"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:layout_marginEnd="20dp"
                 android:background="?actionBarItemBackground"
                 android:contentDescription="@string/app_name"

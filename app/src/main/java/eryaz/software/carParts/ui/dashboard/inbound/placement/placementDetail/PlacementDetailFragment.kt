@@ -210,6 +210,11 @@ class PlacementDetailFragment : BaseFragment() {
                         true
                     }
 
+                    R.id.refresh -> {
+                        viewModel.getWaybillListDetail()
+                        true
+                    }
+
                     else -> false
                 }
             }

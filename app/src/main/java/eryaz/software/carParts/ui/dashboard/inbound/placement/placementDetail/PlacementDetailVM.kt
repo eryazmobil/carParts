@@ -82,7 +82,7 @@ class PlacementDetailVM(
 
     }
 
-    private fun getWaybillListDetail(
+     fun getWaybillListDetail(
     ) {
         executeInBackground(_uiState,
             showProgressDialog = true) {

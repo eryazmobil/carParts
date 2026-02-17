@@ -42,6 +42,10 @@ class PlacementListFragment : BaseFragment() {
             findNavController().navigateUp()
         }
 
+        binding.toolbar.setMenuOnClickListener {
+            viewModel.getPlacementList()
+        }
+
         adapter.onItemClick = { workActivity ->
             TemporaryCashManager.getInstance().workActivity = workActivity
             viewModel.getWorkAction()

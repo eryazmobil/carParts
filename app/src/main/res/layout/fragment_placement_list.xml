@@ -25,8 +25,9 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:navigationIcon="@drawable/back_icon"
+            app:endIconDrawable="@drawable/refresh"
             app:subTitle="@string/choose_work_activity"
-            app:title="@string/acceptance" />
+            app:title="@string/placement_pick_workactivity" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
