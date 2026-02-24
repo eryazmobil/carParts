@@ -184,7 +184,7 @@
                         android:id="@+id/checkBoxToERP"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:checked="@{viewModel.isCheckBoxChecked}"
+                        android:checked="@={viewModel.isCheckBoxChecked}"
                         app:layout_constraintTop_toBottomOf="@+id/amountLyt"
                         app:layout_constraintEnd_toStartOf="@+id/addToErpTxt" />
 
